@@ -1,7 +1,8 @@
 {
     "env": {
         "es2021": true,
-        "node": true
+        "node": true,
+        "jest": true
     },
     "extends": [
         "eslint:recommended",
@@ -18,7 +19,7 @@
     ],
     "rules": {
         "prettier/prettier" : ["error", {
-            "endOfLine": "auto" 
+            "endOfLine": "auto"
         }]
     }
 }
