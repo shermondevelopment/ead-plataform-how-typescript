@@ -1,29 +1,49 @@
-import { MissingParamError } from '../erros/missing-param-error'
-import { badRequest } from '../helpers/http-helper'
-import { Controller } from '../protocols/controller'
-import { EmailValidator } from '../helpers/email-validator'
-import { HttpRequest, HttpResponse } from '../protocols/http'
-import { InvalidParamError } from '../erros/invalid-param-error'
+import { MissingParamError, InvalidParamError } from '../erros'
+import { badRequest, serverError } from '../helpers/http-helper'
+import {
+    Controller,
+    HttpRequest,
+    HttpResponse,
+    AddAccount,
+    EmailValidator
+} from './signup-protocols'
 
 export class SignUpController implements Controller {
     private readonly emailValidator: EmailValidator
+    private readonly addAccount: AddAccount
 
-    constructor(emailValidator: EmailValidator) {
+    constructor(emailValidator: EmailValidator, addAccount: AddAccount) {
         this.emailValidator = emailValidator
+        this.addAccount = addAccount
     }
 
-    handle(httpRequest: HttpRequest): HttpResponse {
-        const requiredfields = ['name', 'email', 'sexo', 'password']
-        for (const fields of requiredfields) {
-            if (!httpRequest.body[fields]) {
-                return badRequest(new MissingParamError(fields))
+    async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
+        try {
+            const requiredfields = ['name', 'email', 'sexo', 'password']
+            for (const fields of requiredfields) {
+                if (!httpRequest.body[fields]) {
+                    return badRequest(new MissingParamError(fields))
+                }
             }
-        }
 
-        if (!this.emailValidator.isEmail(httpRequest.body.email)) {
-            return badRequest(new InvalidParamError('email'))
-        }
+            const { name, email, sexo, password } = httpRequest.body
 
-        return badRequest(new MissingParamError('sexo'))
+            if (!this.emailValidator.isEmail(email)) {
+                return badRequest(new InvalidParamError('email'))
+            }
+
+            const account = await this.addAccount.add({
+                name,
+                email,
+                sexo,
+                password
+            })
+            return {
+                statusCode: 200,
+                body: account
+            }
+        } catch (error) {
+            return serverError()
+        }
     }
 }
