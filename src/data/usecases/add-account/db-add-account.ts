@@ -3,19 +3,21 @@ import {
     AddAccount,
     AddAccountModel
 } from '../../../presentation/controllers/signup-protocols'
+import { AddAccountRepository } from '../../protocols/add-account-repository'
 import { Encrypter } from '../../protocols/encrypter'
 
 export class DbAddAccount implements AddAccount {
     private readonly encrypt: Encrypter
+    private readonly addAccount: AddAccountRepository
 
-    constructor(encrypt: Encrypter) {
+    constructor(encrypt: Encrypter, addAccount: AddAccountRepository) {
         this.encrypt = encrypt
+        this.addAccount = addAccount
     }
 
-    async add(account: AddAccountModel): Promise<AccountModel> {
-        this.encrypt.encrypt(account.password)
-        return new Promise((result) =>
-            result({ id: 'any_id', name: 'any_name', email: 'any_email' })
-        )
+    async add(accountData: AddAccountModel): Promise<AccountModel> {
+        this.encrypt.encrypt(accountData.password)
+        const account = await this.addAccount.add(accountData)
+        return account
     }
 }
