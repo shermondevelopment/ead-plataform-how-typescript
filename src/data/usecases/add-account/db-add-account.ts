@@ -1,10 +1,10 @@
 import {
     AccountModel,
     AddAccount,
-    AddAccountModel
-} from '../../../presentation/controllers/signup-protocols'
-import { AddAccountRepository } from '../../protocols/add-account-repository'
-import { Encrypter } from '../../protocols/encrypter'
+    AddAccountModel,
+    AddAccountRepository,
+    Encrypter
+} from './db-add-account-protocols'
 
 export class DbAddAccount implements AddAccount {
     private readonly encrypt: Encrypter

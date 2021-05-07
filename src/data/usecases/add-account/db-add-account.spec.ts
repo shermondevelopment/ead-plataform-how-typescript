@@ -1,9 +1,9 @@
 import {
     AccountModel,
-    AddAccountModel
-} from '../../../presentation/controllers/signup-protocols'
-import { Encrypter } from '../../protocols/encrypter'
-import { AddAccountRepository } from '../../protocols/add-account-repository'
+    AddAccountModel,
+    Encrypter,
+    AddAccountRepository
+} from './db-add-account-protocols'
 import { DbAddAccount } from './db-add-account'
 
 interface SutTypes {
