@@ -1,9 +1,30 @@
+import {
+    AccountModel,
+    AddAccountModel
+} from '../../../presentation/controllers/signup-protocols'
 import { Encrypter } from '../../protocols/encrypter'
+import { AddAccountRepository } from '../../protocols/add-account-repository'
 import { DbAddAccount } from './db-add-account'
 
 interface SutTypes {
     encryptStub: Encrypter
     sut: DbAddAccount
+    addAccountRepositoryStub: AddAccountRepository
+}
+
+const AddAccountRepository = (): AddAccountRepository => {
+    class AddAccountRepositoryStub implements AddAccountRepository {
+        async add(account: AddAccountModel): Promise<AccountModel> {
+            return new Promise((resolved) =>
+                resolved({
+                    id: 'valid_id',
+                    name: 'valid_name',
+                    email: 'valid_email'
+                })
+            )
+        }
+    }
+    return new AddAccountRepositoryStub()
 }
 
 const EncryptStub = () => {
@@ -17,10 +38,12 @@ const EncryptStub = () => {
 
 const makeSut = (): SutTypes => {
     const encryptStub = EncryptStub()
-    const sut = new DbAddAccount(encryptStub)
+    const addAccountRepositoryStub = AddAccountRepository()
+    const sut = new DbAddAccount(encryptStub, addAccountRepositoryStub)
     return {
         encryptStub,
-        sut
+        sut,
+        addAccountRepositoryStub
     }
 }
 
@@ -50,5 +73,22 @@ describe('DbAccount Usecase', () => {
         )
         const promise = sut.add(accountData)
         expect(promise).rejects.toBeTruthy()
+    })
+    test('Should call AddAccountRepository with correct values', async () => {
+        const { sut, addAccountRepositoryStub } = makeSut()
+        const spyAdd = jest.spyOn(addAccountRepositoryStub, 'add')
+        const accountFake = {
+            name: 'valid_name',
+            email: 'valid_email',
+            sexo: 'valid_sexo',
+            password: 'valid_password'
+        }
+        await sut.add(accountFake)
+        expect(spyAdd).toHaveBeenCalledWith({
+            name: 'valid_name',
+            email: 'valid_email',
+            sexo: 'valid_sexo',
+            password: 'valid_password'
+        })
     })
 })
