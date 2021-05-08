@@ -20,4 +20,9 @@ describe('BcryptAdapter', () => {
         await sut.encrypt('any_value')
         expect(spyBcrypt).toHaveBeenCalledWith('any_value', salt)
     })
+    test('Should bcrypt return correct value', async () => {
+        const sut = makeSut()
+        const hashValue = await sut.encrypt('any_value')
+        expect(hashValue).toBe('hash')
+    })
 })
