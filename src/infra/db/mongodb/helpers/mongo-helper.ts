@@ -16,8 +16,12 @@ export const MongoHelper = {
     },
     async getCollection(name: string): Promise<Collection> {
         if (!this.client?.isConnected()) {
-            await this.client.connect(this.uri)
+            await this.connect(this.uri)
         }
         return this.client.db().collection(name)
+    },
+    map(collection: any): any {
+        const { _id, ...collectionWithOutId } = collection
+        return { ...collectionWithOutId, id: _id }
     }
 }
