@@ -1,12 +1,10 @@
 version: '3.2'
 services:
     db:
-        image: mongo:latest
+        image: mysql:8.0
         container_name: db-brainly
         restart: always
         ports:
-            - ${MONDO_DB_PORT}:27017
+            - ${MYSQL_DB_PORT}:3306
         environment:
-            MONGO_INITDB_DATABASE: brainly-cerebro
-            MONGO_INITDB_ROOT_USERNAME: ${MONGO_DB_USERNAME}
-            MONGO_INITDB_ROOT_PASSWORD: ${MONGO_DB_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_DB_PASSWORD}

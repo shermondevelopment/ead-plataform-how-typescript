@@ -44,6 +44,8 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "dotenv": "^9.0.0",
-    "mongodb": "^3.6.6"
+    "mongodb": "^3.6.6",
+    "mysql2": "^2.2.5",
+    "typeorm": "^0.2.32"
   }
 }
