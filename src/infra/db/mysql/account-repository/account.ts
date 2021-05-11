@@ -3,12 +3,14 @@ import {
     AccountModel,
     AddAccountModel
 } from '../../../../presentation/controllers/signup-protocols'
-import { MongoHelper } from '../helpers/mongo-helper'
+import { MysqlHelper } from '../helpers/mysql-helper'
+import Accounts from '../entity/accounts'
 
 export class AccountMongoRepository implements AddAccountRepository {
     async add(accountData: AddAccountModel): Promise<AccountModel> {
-        const accountCollection = await MongoHelper.getCollection('users')
-        const result = await accountCollection.insertOne(accountData)
-        return MongoHelper.map(result.ops[0])
+        const accountRepository = MysqlHelper.getRepository(Accounts)
+        const account = accountRepository.create(accountData)
+        await accountRepository.save(account)
+        return account
     }
 }

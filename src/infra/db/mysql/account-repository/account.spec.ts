@@ -1,4 +1,5 @@
-import { MongoHelper } from '../helpers/mongo-helper'
+import Accounts from '../entity/accounts'
+import { MysqlHelper } from '../helpers/mysql-helper'
 import { AccountMongoRepository } from './account'
 
 const makeSut = (): AccountMongoRepository => {
@@ -7,18 +8,16 @@ const makeSut = (): AccountMongoRepository => {
 
 describe('Account Mongo Repository', () => {
     beforeAll(async () => {
-        await MongoHelper.connect(
-            `mongodb://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@localhost:${process.env.MONGO_DB_PORT}/admin`
-        )
+        await MysqlHelper.connect()
     })
 
     afterAll(async () => {
-        await MongoHelper.disconnect()
+        await MysqlHelper.disconnect()
     })
 
     beforeEach(async () => {
-        const accountCollection = await MongoHelper.getCollection('users')
-        await accountCollection.deleteMany({})
+        const accountCollection = MysqlHelper.getRepository(Accounts)
+        await accountCollection.delete({ name: 'any_name' })
     })
 
     test('should connect to mongodb', async () => {
@@ -26,7 +25,7 @@ describe('Account Mongo Repository', () => {
         const account = await sut.add({
             name: 'any_name',
             email: 'any_email@mail.com',
-            sexo: 'any_sexo',
+            sexo: 'M',
             password: 'any_password'
         })
         expect(account).toBeTruthy()

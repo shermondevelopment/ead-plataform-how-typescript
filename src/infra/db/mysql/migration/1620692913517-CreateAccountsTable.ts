@@ -8,7 +8,7 @@ export class CreateAccountsTable1620692913517 implements MigrationInterface {
                 columns: [
                     {
                         name: 'id',
-                        type: 'uuid',
+                        type: 'varchar',
                         isPrimary: true,
                         generationStrategy: 'uuid'
                     },
