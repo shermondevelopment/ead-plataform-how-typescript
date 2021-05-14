@@ -31,7 +31,7 @@ const AddAccountRepository = (): AddAccountRepository => {
 const EncryptStub = () => {
     class EncryptStub implements Encrypter {
         async encrypt(password: string): Promise<string> {
-            return new Promise((resolve) => resolve('hash_password'))
+            return new Promise((resolve) => resolve('hashed_password'))
         }
     }
     return new EncryptStub()
@@ -81,7 +81,12 @@ describe('DbAccount Usecase', () => {
         const { sut, addAccountRepositoryStub } = makeSut()
         const spyAdd = jest.spyOn(addAccountRepositoryStub, 'add')
         await sut.add(accountFakeData())
-        expect(spyAdd).toHaveBeenCalledWith(accountFakeData())
+        expect(spyAdd).toHaveBeenCalledWith({
+            name: 'valid_name',
+            email: 'valid_email',
+            sexo: 'valid_sexo',
+            password: 'hashed_password'
+        })
     })
     test('Should call if AddAccountRepository throws', async () => {
         const { sut, addAccountRepositoryStub } = makeSut()
