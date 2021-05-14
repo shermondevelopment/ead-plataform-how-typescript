@@ -4,9 +4,9 @@ import {
     AddAccountModel,
     AccountModel
 } from './signup-protocols'
-import { InvalidParamError, MissingParamError } from '../erros'
-import { serverError } from '../helpers/http-helper'
-import { HttpRequest } from '../protocols/http'
+import { InvalidParamError, MissingParamError } from '../../erros'
+import { serverError } from '../../helpers/http-helper'
+import { HttpRequest } from '../../protocols/http'
 import { SignUpController } from './signup'
 
 interface SutTypes {
