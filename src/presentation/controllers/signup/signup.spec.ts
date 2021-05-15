@@ -4,8 +4,12 @@ import {
     AddAccountModel,
     AccountModel
 } from './signup-protocols'
-import { InvalidParamError, MissingParamError } from '../../erros'
-import { serverError } from '../../helpers/http-helper'
+import {
+    InvalidParamError,
+    MissingParamError,
+    InternalServerError
+} from '../../erros'
+import { serverError, ok } from '../../helpers/http-helper'
 import { HttpRequest } from '../../protocols/http'
 import { SignUpController } from './signup'
 
@@ -24,16 +28,26 @@ const makeEmailValidatorStub = (): EmailValidator => {
     return new EmailValidatorStub()
 }
 
+const makeFakeRequest = (): HttpRequest => ({
+    body: {
+        name: 'any_name',
+        email: 'any_email@mail.com',
+        sexo: 'any_password',
+        password: 'any_password'
+    }
+})
+
+const makeFakeAccount = (): AccountModel => ({
+    id: 'any_id',
+    name: 'valid_name',
+    email: 'valid_email@mail.com',
+    password: 'valid_password'
+})
+
 const makeAddAccountStub = (): AddAccount => {
     class AddAccountStub implements AddAccount {
         async add(account: AddAccountModel): Promise<AccountModel> {
-            const fakeAccount = {
-                id: 'any_id',
-                name: 'any_name',
-                email: 'any_email@mail.com',
-                password: 'any_password'
-            }
-            return new Promise((resolve) => resolve(fakeAccount))
+            return new Promise((resolve) => resolve(makeFakeAccount()))
         }
     }
     return new AddAccountStub()
@@ -49,15 +63,6 @@ const makeSut = (): SutTypes => {
         addAccountStub
     }
 }
-
-const makeFakeRequest = (): HttpRequest => ({
-    body: {
-        name: 'any_name',
-        email: 'any_email@mail.com',
-        sexo: 'any_password',
-        password: 'any_password'
-    }
-})
 
 describe('SignUpController', () => {
     test('Should return 400 if no name is provided', async () => {
@@ -133,6 +138,11 @@ describe('SignUpController', () => {
             return new Promise((resolve, reject) => reject(new Error()))
         })
         const httpResponse = await sut.handle(makeFakeRequest())
-        expect(httpResponse).toEqual(serverError())
+        expect(httpResponse).toEqual(serverError(new InternalServerError(null)))
+    })
+    test('should return 200 if SignUpController return on success', async () => {
+        const { sut } = makeSut()
+        const httpResponse = await sut.handle(makeFakeRequest())
+        expect(httpResponse).toEqual(ok(makeFakeAccount()))
     })
 })
