@@ -12,17 +12,24 @@ interface SutTypes {
     addAccountRepositoryStub: AddAccountRepository
 }
 
+const accountFakeData = (): AddAccountModel => ({
+    name: 'valid_name',
+    email: 'valid_email',
+    sexo: 'valid_sexo',
+    password: 'valid_password'
+})
+
+const accountData = (): AccountModel => ({
+    id: 'valid_id',
+    name: 'valid_name',
+    email: 'valid_email',
+    password: 'hashed_password'
+})
+
 const AddAccountRepository = (): AddAccountRepository => {
     class AddAccountRepositoryStub implements AddAccountRepository {
         async add(account: AddAccountModel): Promise<AccountModel> {
-            return new Promise((resolved) =>
-                resolved({
-                    id: 'valid_id',
-                    name: 'valid_name',
-                    email: 'valid_email',
-                    password: 'hashed_password'
-                })
-            )
+            return new Promise((resolved) => resolved(accountData()))
         }
     }
     return new AddAccountRepositoryStub()
@@ -47,20 +54,6 @@ const makeSut = (): SutTypes => {
         addAccountRepositoryStub
     }
 }
-
-const accountFakeData = (): AddAccountModel => ({
-    name: 'valid_name',
-    email: 'valid_email',
-    sexo: 'valid_sexo',
-    password: 'valid_password'
-})
-
-const accountData = (): AccountModel => ({
-    id: 'valid_id',
-    name: 'valid_name',
-    email: 'valid_email',
-    password: 'hashed_password'
-})
 
 describe('DbAccount Usecase', () => {
     test('Should call Encrypter with correct password', async () => {
