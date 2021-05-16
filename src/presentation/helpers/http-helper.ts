@@ -1,9 +1,14 @@
-import { InternalServerError } from '../erros/internal-server-error'
+import { InternalServerError, UnauthorizedError } from '../erros'
 import { HttpResponse } from '../protocols/http'
 
 export const badRequest = (error: Error): HttpResponse => ({
     statusCode: 400,
     body: error
+})
+
+export const unauthorized = (): HttpResponse => ({
+    statusCode: 401,
+    body: new UnauthorizedError()
 })
 
 export const serverError = (error: Error): HttpResponse => ({
