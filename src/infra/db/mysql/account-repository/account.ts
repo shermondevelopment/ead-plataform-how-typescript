@@ -2,7 +2,7 @@ import { AddAccountRepository } from '../../../../data/protocols/add-account-rep
 import {
     AccountModel,
     AddAccountModel
-} from '../../../../presentation/controllers/signup-protocols'
+} from '../../../../presentation/controllers/signup/signup-protocols'
 import { MysqlHelper } from '../helpers/mysql-helper'
 import Accounts from '../entity/accounts'
 
