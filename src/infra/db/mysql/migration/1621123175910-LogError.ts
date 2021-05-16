@@ -14,7 +14,7 @@ export class LogError1621123175910 implements MigrationInterface {
                     },
                     {
                         name: 'stack',
-                        type: 'varchar',
+                        type: 'text',
                         isNullable: false
                     },
                     {
