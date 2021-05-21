@@ -1,13 +1,13 @@
 import {
     AccountModel,
     AddAccountModel,
-    Encrypter,
+    Hash,
     AddAccountRepository
 } from './db-add-account-protocols'
 import { DbAddAccount } from './db-add-account'
 
 interface SutTypes {
-    encryptStub: Encrypter
+    hashStub: Hash
     sut: DbAddAccount
     addAccountRepositoryStub: AddAccountRepository
 }
@@ -35,21 +35,21 @@ const AddAccountRepository = (): AddAccountRepository => {
     return new AddAccountRepositoryStub()
 }
 
-const EncryptStub = () => {
-    class EncryptStub implements Encrypter {
-        async encrypt(password: string): Promise<string> {
+const HashStub = () => {
+    class HashStub implements Hash {
+        async hash(password: string): Promise<string> {
             return new Promise((resolve) => resolve('hashed_password'))
         }
     }
-    return new EncryptStub()
+    return new HashStub()
 }
 
 const makeSut = (): SutTypes => {
-    const encryptStub = EncryptStub()
+    const hashStub = HashStub()
     const addAccountRepositoryStub = AddAccountRepository()
-    const sut = new DbAddAccount(encryptStub, addAccountRepositoryStub)
+    const sut = new DbAddAccount(hashStub, addAccountRepositoryStub)
     return {
-        encryptStub,
+        hashStub,
         sut,
         addAccountRepositoryStub
     }
@@ -57,14 +57,14 @@ const makeSut = (): SutTypes => {
 
 describe('DbAccount Usecase', () => {
     test('Should call Encrypter with correct password', async () => {
-        const { sut, encryptStub } = makeSut()
-        const encryptSpy = jest.spyOn(encryptStub, 'encrypt')
+        const { sut, hashStub } = makeSut()
+        const encryptSpy = jest.spyOn(hashStub, 'hash')
         await sut.add(accountFakeData())
         expect(encryptSpy).toHaveBeenCalledWith('valid_password')
     })
     test('Should throw if Encrypter throws', async () => {
-        const { sut, encryptStub } = makeSut()
-        jest.spyOn(encryptStub, 'encrypt').mockReturnValueOnce(
+        const { sut, hashStub } = makeSut()
+        jest.spyOn(hashStub, 'hash').mockReturnValueOnce(
             new Promise((resolve, reject) => reject(new Error()))
         )
         const promise = sut.add(accountFakeData())
