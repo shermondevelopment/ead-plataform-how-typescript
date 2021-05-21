@@ -1,4 +1,4 @@
-import { LogErrorRepository } from '../../../../data/protocols/log-error-repository'
+import { LogErrorRepository } from '../../../../data/protocols/db/log-error-repository'
 import Errors from '../entity/errors'
 import { MysqlHelper } from '../helpers/mysql-helper'
 
