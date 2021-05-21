@@ -9,7 +9,7 @@ export class BcryptAdapter implements Hash, HashCompare {
         return bcrypt.hash(password, this.salt)
     }
     async compare(value: string, hash: string): Promise<boolean> {
-        await bcrypt.compare(value, hash)
-        return new Promise((resolved) => resolved(true))
+        const isValid = await bcrypt.compare(value, hash)
+        return isValid
     }
 }
