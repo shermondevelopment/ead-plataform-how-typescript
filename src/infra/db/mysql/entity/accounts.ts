@@ -16,4 +16,7 @@ export default class Accounts {
 
     @Column()
     sexo: string
+
+    @Column()
+    token: string
 }

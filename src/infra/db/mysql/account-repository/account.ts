@@ -7,9 +7,13 @@ import { MysqlHelper } from '../helpers/mysql-helper'
 import Accounts from '../entity/accounts'
 import { LoadAccountByEmailRepository } from '../../../../data/protocols/db/load-account-by-email-repository'
 import { Repository } from 'typeorm'
+import { UpdateAccessTokenRepository } from '../../../../data/protocols/db/update-access-token-repository'
 
 export class AccountMongoRepository
-    implements AddAccountRepository, LoadAccountByEmailRepository {
+    implements
+        AddAccountRepository,
+        LoadAccountByEmailRepository,
+        UpdateAccessTokenRepository {
     private accountRepository: Repository<Accounts>
 
     constructor() {
@@ -25,5 +29,9 @@ export class AccountMongoRepository
     async loadByEmail(email: string): Promise<AccountModel> {
         const loadByEmail = await this.accountRepository.findOne({ email })
         return loadByEmail
+    }
+
+    async update(id: string, token: string): Promise<void> {
+        await this.accountRepository.update(id, { token })
     }
 }

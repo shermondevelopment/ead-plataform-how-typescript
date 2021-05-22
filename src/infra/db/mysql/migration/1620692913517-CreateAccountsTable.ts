@@ -33,6 +33,11 @@ export class CreateAccountsTable1620692913517 implements MigrationInterface {
                         type: 'enum',
                         enum: ['M', 'F'],
                         isNullable: false
+                    },
+                    {
+                        name: 'token',
+                        type: 'text',
+                        isNullable: true
                     }
                 ]
             }),
