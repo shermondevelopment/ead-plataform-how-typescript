@@ -4,7 +4,22 @@ services:
         image: mysql:8.0
         container_name: db-brainly
         restart: always
+        volumes:
+            - ./data:/var/lib/mysql
         ports:
             - ${TYPEORM_PORT}:3306
         environment:
             MYSQL_ROOT_PASSWORD: ${TYPEORM_PASSWORD}
+
+    api:
+        container_name: api-container
+        build: .
+        restart: always
+        image: clean-node-api
+        command: npm start
+        volumes:
+            - ./dist:/usr/src/clean-node-api/dist
+        ports:
+            - '5050:5050'
+        links:
+            - db
