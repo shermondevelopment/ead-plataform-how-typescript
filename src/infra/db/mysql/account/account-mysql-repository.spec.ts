@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm'
 import Accounts from '../entity/accounts'
 import { MysqlHelper } from '../helpers/mysql-helper'
-import { AccountMongoRepository } from './account'
+import { AccountMongoRepository } from './account-mysql-repository'
 
 const makeSut = (): AccountMongoRepository => {
     return new AccountMongoRepository()

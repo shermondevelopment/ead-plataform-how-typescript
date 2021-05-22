@@ -3,7 +3,7 @@ import {
     RequiredFieldValidation,
     EmailValidation
 } from '../../../presentation/helpers/validators'
-import { makeSigninValidation } from './signin-validators'
+import { makeSigninValidation } from './signin-validators-factory'
 import { Validation } from '../../../presentation/protocols/validation'
 import { EmailValidator } from '../../../presentation/helpers/email-validator'
 

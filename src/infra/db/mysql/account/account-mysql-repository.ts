@@ -1,13 +1,13 @@
-import { AddAccountRepository } from '../../../../data/protocols/db/add-account-repository'
+import { AddAccountRepository } from '../../../../data/protocols/db/account/add-account-repository'
 import {
     AccountModel,
     AddAccountModel
-} from '../../../../presentation/controllers/signup/signup-protocols'
+} from '../../../../presentation/controllers/signup/signup-controller-protocols'
 import { MysqlHelper } from '../helpers/mysql-helper'
 import Accounts from '../entity/accounts'
-import { LoadAccountByEmailRepository } from '../../../../data/protocols/db/load-account-by-email-repository'
+import { LoadAccountByEmailRepository } from '../../../../data/protocols/db/account/load-account-by-email-repository'
 import { Repository } from 'typeorm'
-import { UpdateAccessTokenRepository } from '../../../../data/protocols/db/update-access-token-repository'
+import { UpdateAccessTokenRepository } from '../../../../data/protocols/db/account/update-access-token-repository'
 
 export class AccountMongoRepository
     implements

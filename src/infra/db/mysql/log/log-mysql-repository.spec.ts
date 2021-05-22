@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm'
 import Errors from '../entity/errors'
 import { MysqlHelper } from '../helpers/mysql-helper'
-import { LogMysqlRepository } from './log'
+import { LogMysqlRepository } from './log-mysql-repository'
 
 const makeSut = (): LogMysqlRepository => {
     return new LogMysqlRepository()
