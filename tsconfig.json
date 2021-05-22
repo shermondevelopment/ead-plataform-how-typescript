@@ -10,8 +10,13 @@
     "strictNullChecks": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "outDir": "dist"
   },
   "include": [
     "./src"
+  ],
+  "exlude": [
+      "**/*.spec.ts",
+      "**/*.test.ts"
   ]
 }
