@@ -11,7 +11,7 @@ import { JwtAdapter } from '../../../infra/criptograph/jwt-adapter/jwt-adapter'
 export const makeSigninController = (): Controller => {
     const salt = 12
     const bcryptAdapter = new BcryptAdapter(salt)
-    const jwtAdapter = new JwtAdapter(process.env.JWT_KEY)
+    const jwtAdapter = new JwtAdapter('fkdmkm')
     const accountMysqlRepository = new AccountMongoRepository()
     const dbAuthentication = new DbAuthentication(
         accountMysqlRepository,

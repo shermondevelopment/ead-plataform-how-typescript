@@ -2,6 +2,9 @@ import request from 'supertest'
 import app from '../config/app'
 import { MysqlHelper } from '../../infra/db/mysql/helpers/mysql-helper'
 import Accounts from '../../infra/db/mysql/entity/accounts'
+import { Repository } from 'typeorm'
+
+let accountCollection: Repository<Accounts>
 
 describe('Signin Routes', () => {
     beforeAll(async () => {
@@ -13,8 +16,8 @@ describe('Signin Routes', () => {
     })
 
     beforeEach(async () => {
-        const accountCollection = MysqlHelper.getRepository(Accounts)
-        await accountCollection.delete({ name: 'any_name' })
+        accountCollection = MysqlHelper.getRepository(Accounts)
+        await accountCollection.delete({ name: 'victor' })
     })
 
     describe('POST /signup', () => {
@@ -25,6 +28,17 @@ describe('Signin Routes', () => {
                     name: 'victor',
                     email: 'victorshermon@yahoo.com',
                     sexo: 'M',
+                    password: '123'
+                })
+                .expect(200)
+        })
+    })
+    describe('POST /signin', () => {
+        test('Should return 200 account on signin', async () => {
+            await request(app)
+                .post('/api/signin')
+                .send({
+                    email: 'victor804.gt@gmail.com',
                     password: '123'
                 })
                 .expect(200)
