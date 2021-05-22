@@ -3,7 +3,7 @@ import app from '../config/app'
 import { MysqlHelper } from '../../infra/db/mysql/helpers/mysql-helper'
 import Accounts from '../../infra/db/mysql/entity/accounts'
 
-describe('Signup Routes', () => {
+describe('Signin Routes', () => {
     beforeAll(async () => {
         await MysqlHelper.connect()
     })
@@ -17,15 +17,17 @@ describe('Signup Routes', () => {
         await accountCollection.delete({ name: 'any_name' })
     })
 
-    test('Should return an account on success', async () => {
-        await request(app)
-            .post('/api/signup')
-            .send({
-                name: 'victor',
-                email: 'victorshermon@yahoo.com',
-                sexo: 'M',
-                password: '123'
-            })
-            .expect(200)
+    describe('POST /signup', () => {
+        test('Should return 200 account on signup', async () => {
+            await request(app)
+                .post('/api/signup')
+                .send({
+                    name: 'victor',
+                    email: 'victorshermon@yahoo.com',
+                    sexo: 'M',
+                    password: '123'
+                })
+                .expect(200)
+        })
     })
 })
