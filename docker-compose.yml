@@ -1,28 +1,28 @@
-version: '3.2'
+version: '3'
 services:
     mysql:
-        image: mysql:8.0
         container_name: db-brainly
+        image: mysql:8.0
+        environment:
+            MYSQL_ROOT_PASSWORD: ${TYPEORM_PASSWORD}
         restart: always
-        env_file:
-            - ormconfig.env
-        expose:
-            - '3306'
         volumes:
             - ./data:/var/lib/mysql
         ports:
             - '3306:3306'
-        environment:
-            MYSQL_ROOT_PASSWORD: ${TYPEORM_PASSWORD}
+        env_file:
+            - .env
     api:
         container_name: api-container
-        build: .
+        image: node:14
+        working_dir: /usr/src/clean-node-api
         restart: always
-        image: clean-node-api
-        command: npm start
+        command: bash -c "npm install --only=prod && npm start"
         volumes:
-            - ./dist:/usr/src/clean-node-api/dist
-            - ./package.json:/usr/src/clean-node-api
+            - ./dist/:/usr/src/clean-node-api/dist/
+            - ./package.json:/usr/src/clean-node-api/package.json
+            - ./ormconfig.env:/usr/src/clean-node-api/ormconfig.env
+            - ./.env:/usr/src/clean-node-api/.env
         ports:
             - '5050:5050'
         links:
