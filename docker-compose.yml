@@ -1,16 +1,19 @@
 version: '3.2'
 services:
-    db:
+    mysql:
         image: mysql:8.0
         container_name: db-brainly
         restart: always
+        env_file:
+            - ormconfig.env
+        expose:
+            - '3306'
         volumes:
             - ./data:/var/lib/mysql
         ports:
-            - ${TYPEORM_PORT}:3306
+            - '3306:3306'
         environment:
             MYSQL_ROOT_PASSWORD: ${TYPEORM_PASSWORD}
-
     api:
         container_name: api-container
         build: .
@@ -19,7 +22,8 @@ services:
         command: npm start
         volumes:
             - ./dist:/usr/src/clean-node-api/dist
+            - ./package.json:/usr/src/clean-node-api
         ports:
             - '5050:5050'
         links:
-            - db
+            - mysql
