@@ -6,8 +6,17 @@ import {
     Authentication,
     AuthenticationModel
 } from './signup-controller-protocols'
-import { MissingParamError, InternalServerError } from '../../erros'
-import { serverError, ok, badRequest } from '../../helpers/http/http-helper'
+import {
+    MissingParamError,
+    InternalServerError,
+    EmailInUseError
+} from '../../erros'
+import {
+    serverError,
+    ok,
+    badRequest,
+    forbidden
+} from '../../helpers/http/http-helper'
 import { HttpRequest } from '../../protocols/http'
 import { SignUpController } from './signup-controller'
 
@@ -127,5 +136,13 @@ describe('SignUpController', () => {
         )
         const httpResponse = await sut.handle(makeFakeRequest())
         expect(httpResponse).toEqual(serverError(new Error()))
+    })
+    test('should return 403 if AddAccount return null', async () => {
+        const { sut, addAccountStub } = makeSut()
+        jest.spyOn(addAccountStub, 'add').mockReturnValueOnce(
+            new Promise((resolve) => resolve(null))
+        )
+        const httpResponse = await sut.handle(makeFakeRequest())
+        expect(httpResponse).toEqual(forbidden(new EmailInUseError()))
     })
 })
