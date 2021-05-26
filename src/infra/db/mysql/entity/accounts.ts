@@ -19,4 +19,7 @@ export default class Accounts {
 
     @Column()
     token: string
+
+    @Column()
+    role?: string
 }
