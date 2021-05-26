@@ -9,13 +9,14 @@ import { LoadAccountByEmailRepository } from '../../../../data/protocols/db/acco
 import { Repository } from 'typeorm'
 import { UpdateAccessTokenRepository } from '../../../../data/protocols/db/account/update-access-token-repository'
 import { LoadAccountByToken } from '../../../../presentation/middlewares/auth-middleware-protocols'
+import { LoadAccountByTokenRepository } from '../../../../data/protocols/db/account/load-account-by-token-repository'
 
 export class AccountMongoRepository
     implements
         AddAccountRepository,
         LoadAccountByEmailRepository,
         UpdateAccessTokenRepository,
-        LoadAccountByToken {
+        LoadAccountByTokenRepository {
     private accountRepository: Repository<Accounts>
 
     constructor() {
@@ -37,7 +38,7 @@ export class AccountMongoRepository
         await this.accountRepository.update(id, { token })
     }
 
-    async load(token: string, role?: string): Promise<AccountModel> {
+    async loadByToken(token: string, role?: string): Promise<AccountModel> {
         const loadByToken = await this.accountRepository.findOne({
             where: {
                 token,
