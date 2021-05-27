@@ -8,7 +8,6 @@ import Accounts from '../entity/accounts'
 import { LoadAccountByEmailRepository } from '../../../../data/protocols/db/account/load-account-by-email-repository'
 import { Repository } from 'typeorm'
 import { UpdateAccessTokenRepository } from '../../../../data/protocols/db/account/update-access-token-repository'
-import { LoadAccountByToken } from '../../../../presentation/middlewares/auth-middleware-protocols'
 import { LoadAccountByTokenRepository } from '../../../../data/protocols/db/account/load-account-by-token-repository'
 
 export class AccountMongoRepository
