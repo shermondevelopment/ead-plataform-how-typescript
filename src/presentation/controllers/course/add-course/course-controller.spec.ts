@@ -40,4 +40,17 @@ describe('Course Controller', () => {
         const courseError = await sut.handle(httpRequest)
         expect(courseError).toEqual(badRequest(new MissingParamError('title')))
     })
+    test('Should return 400 if the figure parameter is not sent', async () => {
+        const { sut, validationStub } = makeSut()
+        const httpRequest = {
+            body: {
+                title: 'any_title'
+            }
+        }
+        jest.spyOn(validationStub, 'validate').mockReturnValueOnce(
+            new MissingParamError('figure')
+        )
+        const courseError = await sut.handle(httpRequest)
+        expect(courseError).toEqual(badRequest(new MissingParamError('figure')))
+    })
 })
