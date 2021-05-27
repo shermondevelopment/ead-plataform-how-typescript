@@ -81,17 +81,17 @@ describe('Account Mongo Repository', () => {
             sexo: 'M',
             password: 'any_password',
             token: 'any_token',
-            role: 'any_role'
+            role: 'admin'
         })
         await accountRepository.save(signup)
-        const account = await sut.loadByToken('any_token', 'any_role')
+        const account = await sut.loadByToken('any_token', 'admin')
         expect(account).toBeTruthy()
         expect(account.id).toBeTruthy()
         expect(account.name).toBe('any_name')
         expect(account.email).toBe('any_email@mail.com')
         expect(account.password).toBe('any_password')
     })
-    test('Should return an account on loadByToken with role', async () => {
+    test('Should return an account on loadByToken with admin role', async () => {
         const sut = makeSut()
         const signup = accountRepository.create({
             name: 'any_name',
@@ -99,10 +99,41 @@ describe('Account Mongo Repository', () => {
             sexo: 'M',
             password: 'any_password',
             token: 'any_token',
-            role: 'any_role'
+            role: 'admin'
         })
         await accountRepository.save(signup)
-        const account = await sut.loadByToken('any_token', 'any_role')
+        const account = await sut.loadByToken('any_token', 'admin')
+        expect(account).toBeTruthy()
+        expect(account.id).toBeTruthy()
+        expect(account.name).toBe('any_name')
+        expect(account.email).toBe('any_email@mail.com')
+        expect(account.password).toBe('any_password')
+    })
+    test('Should return loadByToken with invalid role', async () => {
+        const sut = makeSut()
+        const signup = accountRepository.create({
+            name: 'any_name',
+            email: 'any_email@mail.com',
+            sexo: 'M',
+            password: 'any_password',
+            token: 'any_token'
+        })
+        await accountRepository.save(signup)
+        const account = await sut.loadByToken('any_token', 'admin')
+        expect(account).toBeFalsy()
+    })
+    test('Should return an accounton loadByToken with if user is admin', async () => {
+        const sut = makeSut()
+        const signup = accountRepository.create({
+            name: 'any_name',
+            email: 'any_email@mail.com',
+            sexo: 'M',
+            password: 'any_password',
+            token: 'any_token',
+            role: 'admin'
+        })
+        await accountRepository.save(signup)
+        const account = await sut.loadByToken('any_token', 'admin')
         expect(account).toBeTruthy()
         expect(account.id).toBeTruthy()
         expect(account.name).toBe('any_name')

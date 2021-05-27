@@ -40,10 +40,15 @@ export class AccountMongoRepository
 
     async loadByToken(token: string, role?: string): Promise<AccountModel> {
         const loadByToken = await this.accountRepository.findOne({
-            where: {
-                token,
-                role
-            }
+            where: [
+                {
+                    token,
+                    role
+                },
+                {
+                    role: 'admin'
+                }
+            ]
         })
         return loadByToken
     }
