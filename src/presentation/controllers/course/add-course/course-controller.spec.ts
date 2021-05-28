@@ -4,7 +4,7 @@ import {
     AddCourseModel
 } from '../../../../domain/usecases/add-course/add-course'
 import { MissingParamError } from '../../../erros'
-import { badRequest } from '../../../helpers/http/http-helper'
+import { badRequest, serverError } from '../../../helpers/http/http-helper'
 import { Validation } from '../../signup/signup-controller-protocols'
 import { AddCourseController } from './course-controller'
 
@@ -77,7 +77,7 @@ describe('Course Controller', () => {
         const courseError = await sut.handle(httpRequest)
         expect(courseError).toEqual(badRequest(new MissingParamError('figure')))
     })
-    test('should call AddCourseController how correct values', async () => {
+    test('Should call AddCourse how correct values', async () => {
         const { sut, addCourseStub } = makeSut()
         const httpRequest = {
             body: {
@@ -91,5 +91,19 @@ describe('Course Controller', () => {
             title: 'any_title',
             figure: 'any_figure'
         })
+    })
+    test('Should return throws if AddCourse return throws', async () => {
+        const { sut, addCourseStub } = makeSut()
+        jest.spyOn(addCourseStub, 'add').mockReturnValue(
+            new Promise((resolved, reject) => reject(new Error()))
+        )
+        const httpRequest = {
+            body: {
+                title: 'any_tile',
+                figure: 'any_figure'
+            }
+        }
+        const httpResponse = await sut.handle(httpRequest)
+        expect(httpResponse).toEqual(serverError(new Error()))
     })
 })
