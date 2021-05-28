@@ -4,7 +4,7 @@ import {
     AddCourseModel
 } from '../../../../domain/usecases/add-course/add-course'
 import { MissingParamError } from '../../../erros'
-import { badRequest, serverError } from '../../../helpers/http/http-helper'
+import { badRequest, ok, serverError } from '../../../helpers/http/http-helper'
 import { Validation } from '../../signup/signup-controller-protocols'
 import { AddCourseController } from './course-controller'
 
@@ -92,7 +92,7 @@ describe('Course Controller', () => {
             figure: 'any_figure'
         })
     })
-    test('Should return throws if AddCourse return throws', async () => {
+    test('Should return 500 if AddCourse return throws', async () => {
         const { sut, addCourseStub } = makeSut()
         jest.spyOn(addCourseStub, 'add').mockReturnValue(
             new Promise((resolved, reject) => reject(new Error()))
@@ -105,5 +105,16 @@ describe('Course Controller', () => {
         }
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse).toEqual(serverError(new Error()))
+    })
+    test('Should return 200 if AddCourse return success', async () => {
+        const { sut } = makeSut()
+        const httpRequest = {
+            body: {
+                title: 'any_title',
+                figure: 'any_figure'
+            }
+        }
+        const httpResponse = await sut.handle(httpRequest)
+        expect(httpResponse).toEqual(ok(makeFakeResponseCourse()))
     })
 })
