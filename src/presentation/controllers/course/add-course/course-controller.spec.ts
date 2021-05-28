@@ -30,6 +30,13 @@ const makeFakeResponseCourse = (): CourseModel => ({
     slug: 'any_slug'
 })
 
+const makeFakeRequestCourse = (): any => ({
+    body: {
+        title: 'any_title',
+        figure: 'any_figure'
+    }
+})
+
 const makeAddCourse = (): AddCourse => {
     class AddCourseStub implements AddCourse {
         async add(course: AddCourseModel): Promise<CourseModel> {
@@ -79,14 +86,8 @@ describe('Course Controller', () => {
     })
     test('Should call AddCourse how correct values', async () => {
         const { sut, addCourseStub } = makeSut()
-        const httpRequest = {
-            body: {
-                title: 'any_title',
-                figure: 'any_figure'
-            }
-        }
         const spyAddCourse = jest.spyOn(addCourseStub, 'add')
-        await sut.handle(httpRequest)
+        await sut.handle(makeFakeRequestCourse())
         expect(spyAddCourse).toHaveBeenCalledWith({
             title: 'any_title',
             figure: 'any_figure'
@@ -97,24 +98,12 @@ describe('Course Controller', () => {
         jest.spyOn(addCourseStub, 'add').mockReturnValue(
             new Promise((resolved, reject) => reject(new Error()))
         )
-        const httpRequest = {
-            body: {
-                title: 'any_tile',
-                figure: 'any_figure'
-            }
-        }
-        const httpResponse = await sut.handle(httpRequest)
+        const httpResponse = await sut.handle(makeFakeRequestCourse())
         expect(httpResponse).toEqual(serverError(new Error()))
     })
     test('Should return 200 if AddCourse return success', async () => {
         const { sut } = makeSut()
-        const httpRequest = {
-            body: {
-                title: 'any_title',
-                figure: 'any_figure'
-            }
-        }
-        const httpResponse = await sut.handle(httpRequest)
+        const httpResponse = await sut.handle(makeFakeRequestCourse())
         expect(httpResponse).toEqual(ok(makeFakeResponseCourse()))
     })
 })
