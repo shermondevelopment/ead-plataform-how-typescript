@@ -1,5 +1,5 @@
 import { AddCourse } from '../../../../domain/usecases/add-course/add-course'
-import { badRequest, serverError } from '../../../helpers/http/http-helper'
+import { badRequest, ok, serverError } from '../../../helpers/http/http-helper'
 import { Controller, HttpRequest, HttpResponse } from '../../../protocols'
 import { Validation } from '../../signup/signup-controller-protocols'
 
@@ -15,10 +15,11 @@ export class AddCourseController implements Controller {
                 return badRequest(error)
             }
             const { title, figure } = httpRequest.body
-            await this.addCourse.add({
+            const course = await this.addCourse.add({
                 title,
                 figure
             })
+            return ok(course)
         } catch (err) {
             return serverError(err)
         }
