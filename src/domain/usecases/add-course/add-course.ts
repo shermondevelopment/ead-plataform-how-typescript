@@ -3,7 +3,7 @@ import { CourseModel } from '../../models/course-model'
 export interface AddCourseModel {
     title: string
     figure: string
-    slug: string
+    slug?: string
 }
 
 export interface AddCourse {

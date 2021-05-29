@@ -14,7 +14,7 @@ interface SutTypes {
 }
 
 const makeFakeRequest = (): AddCourseModel => ({
-    title: 'valid_title',
+    title: 'valid_slug',
     figure: 'valid_figure',
     slug: 'valid_slug'
 })
@@ -75,7 +75,7 @@ describe('DbAddCourse Usecase', () => {
         const spyCourse = jest.spyOn(addCourseRepository, 'add')
         await sut.add(makeFakeRequest())
         expect(spyCourse).toHaveBeenCalledWith({
-            title: 'valid_title',
+            title: 'valid_slug',
             figure: 'valid_figure',
             slug: 'valid-slug'
         })
