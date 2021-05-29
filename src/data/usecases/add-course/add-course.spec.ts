@@ -88,4 +88,9 @@ describe('DbAddCourse Usecase', () => {
         const httpResponse = sut.add(makeFakeRequest())
         await expect(httpResponse).rejects.toThrow()
     })
+    test('Should return an course if on success', async () => {
+        const { sut } = makeSut()
+        const course = await sut.add(makeFakeRequest())
+        expect(course).toEqual(makeFakeResponse())
+    })
 })
