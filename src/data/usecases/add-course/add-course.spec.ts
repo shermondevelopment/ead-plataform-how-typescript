@@ -37,4 +37,12 @@ describe('DbAddCourse Usecase', () => {
         await sut.add(makeFakeRequest())
         expect(spySlug).toHaveBeenCalledWith('any_title')
     })
+    test('Should throw if Slug return throws', async () => {
+        const { sut, slugStub } = makeSut()
+        jest.spyOn(slugStub, 'transform').mockImplementationOnce(() => {
+            throw new Error()
+        })
+        const httpResponse = sut.add(makeFakeRequest())
+        await expect(httpResponse).rejects.toThrow()
+    })
 })
