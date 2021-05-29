@@ -6,7 +6,7 @@ import { makeAuthMiddleware } from '../factories/middlewares/auth-middleware-fac
 import { adaptMiddleware } from '../adapters/express-middleware-adapter'
 
 export default (router: Router): void => {
-    const adminAuth = adaptMiddleware(makeAuthMiddleware('admin'))
+    const adminAuth = adaptMiddleware(makeAuthMiddleware('user'))
     router.post('/signup', adaptRoute(makeSignUpController()))
     router.post('/signin', adminAuth, adaptRoute(makeSigninController()))
 }
