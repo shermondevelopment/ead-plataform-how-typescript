@@ -1,32 +1,57 @@
-import { AddCourse } from '../../../domain/usecases/add-course/add-course'
+import { CourseModel } from '../../../domain/models/course-model'
+import {
+    AddCourse,
+    AddCourseModel
+} from '../../../domain/usecases/add-course/add-course'
+import { AddCourseRepository } from '../../protocols/db/course/db-add-course-repository'
 import { Slug } from '../../protocols/remodulate/slug'
 import { DbAddCourse } from './add-course'
 
 interface SutTypes {
     sut: AddCourse
     slugStub: Slug
+    addCourseRepository: AddCourseRepository
 }
 
-const makeFakeRequest = () => ({
-    title: 'any_title',
-    figure: 'any_value'
+const makeFakeRequest = (): AddCourseModel => ({
+    title: 'valid_title',
+    figure: 'valid_figure',
+    slug: 'valid_slug'
 })
 
 const makeSlugStub = (): Slug => {
     class SlugStub implements Slug {
         transform(value: string): string {
-            return 'any-value'
+            return 'valid-slug'
         }
     }
     return new SlugStub()
 }
 
+const makeFakeResponse = (): CourseModel => ({
+    id: 'valid_id',
+    title: 'valid_title',
+    figure: 'valid_figure',
+    slug: 'valid-slug'
+})
+
+const makeAddCourseRepository = (): AddCourseRepository => {
+    class AddCourseRepositoryStub implements AddCourseRepository {
+        async add(course: AddCourseModel): Promise<CourseModel> {
+            return new Promise((resolved) => resolved(makeFakeResponse()))
+        }
+    }
+    return new AddCourseRepositoryStub()
+}
+
 const makeSut = (): SutTypes => {
     const slugStub = makeSlugStub()
-    const sut = new DbAddCourse(slugStub)
+    const addCourseRepository = makeAddCourseRepository()
+    const sut = new DbAddCourse(slugStub, addCourseRepository)
     return {
         sut,
-        slugStub
+        slugStub,
+        addCourseRepository
     }
 }
 
@@ -35,7 +60,7 @@ describe('DbAddCourse Usecase', () => {
         const { sut, slugStub } = makeSut()
         const spySlug = jest.spyOn(slugStub, 'transform')
         await sut.add(makeFakeRequest())
-        expect(spySlug).toHaveBeenCalledWith('any_title')
+        expect(spySlug).toHaveBeenCalledWith('valid_slug')
     })
     test('Should throw if Slug return throws', async () => {
         const { sut, slugStub } = makeSut()
@@ -44,5 +69,15 @@ describe('DbAddCourse Usecase', () => {
         })
         const httpResponse = sut.add(makeFakeRequest())
         await expect(httpResponse).rejects.toThrow()
+    })
+    test('Should call AddAccountRepository with correct values', async () => {
+        const { sut, addCourseRepository } = makeSut()
+        const spyCourse = jest.spyOn(addCourseRepository, 'add')
+        await sut.add(makeFakeRequest())
+        expect(spyCourse).toHaveBeenCalledWith({
+            title: 'valid_title',
+            figure: 'valid_figure',
+            slug: 'valid-slug'
+        })
     })
 })
