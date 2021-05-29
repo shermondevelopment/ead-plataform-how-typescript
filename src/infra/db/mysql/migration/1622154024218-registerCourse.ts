@@ -21,8 +21,7 @@ export class registerCourse1622154024218 implements MigrationInterface {
                     {
                         name: 'figure',
                         type: 'varchar',
-                        isNullable: false,
-                        default: 'default.svg'
+                        isNullable: false
                     },
                     {
                         name: 'slug',
