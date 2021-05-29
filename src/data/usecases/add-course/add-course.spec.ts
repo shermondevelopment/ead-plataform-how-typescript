@@ -80,4 +80,12 @@ describe('DbAddCourse Usecase', () => {
             slug: 'valid-slug'
         })
     })
+    test('Should return throws if AddAccountRepository return throws', async () => {
+        const { sut, addCourseRepository } = makeSut()
+        jest.spyOn(addCourseRepository, 'add').mockReturnValueOnce(
+            new Promise((resolve, reject) => reject(new Error()))
+        )
+        const httpResponse = sut.add(makeFakeRequest())
+        await expect(httpResponse).rejects.toThrow()
+    })
 })
