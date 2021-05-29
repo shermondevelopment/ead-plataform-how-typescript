@@ -15,11 +15,11 @@ export class DbAddCourse implements AddCourse {
     async add(course: AddCourseModel): Promise<CourseModel> {
         const { title, figure, slug } = course
         const transformSlug = this.slug.transform(slug)
-        await this.addCourseRepository.add({
+        const accountCourse = await this.addCourseRepository.add({
             title,
             figure,
             slug: transformSlug
         })
-        return null
+        return accountCourse
     }
 }
