@@ -3,3 +3,9 @@ declare namespace Express {
         accountId?: string
     }
 }
+
+declare namespace Express {
+    interface Request {
+        figure: string
+    }
+}

@@ -5,10 +5,18 @@ import { makeSigninController } from '../factories/controllers/signin/signin-con
 import { makeAuthMiddleware } from '../factories/middlewares/auth-middleware-factory'
 import { adaptMiddleware } from '../adapters/express-middleware-adapter'
 import { makeAddCourseController } from '../factories/controllers/course/course-controller-factory'
+import multer from 'multer'
+import configBucket from '../config/bucket-aws'
+import { adaptRouteMulter } from '../adapters/express-route-adapter-how-multer'
 
 export default (router: Router): void => {
     const adminAuth = adaptMiddleware(makeAuthMiddleware('admin'))
     router.post('/signup', adaptRoute(makeSignUpController()))
     router.post('/signin', adaptRoute(makeSigninController()))
-    router.post('/course/add', adminAuth, adaptRoute(makeAddCourseController()))
+    router.post(
+        '/course/add',
+        multer(configBucket).single('figure'),
+        adminAuth,
+        adaptRouteMulter(makeAddCourseController())
+    )
 }
