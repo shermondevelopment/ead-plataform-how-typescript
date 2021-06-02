@@ -8,5 +8,6 @@ export default {
     transform: {
         '.+\\.ts$': 'ts-jest'
     },
-    testMatch: ['**/*.spec.ts']
+    testMatch: ['**/*.spec.ts'],
+    testTimeout: 30000
 }
