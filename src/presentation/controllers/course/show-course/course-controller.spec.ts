@@ -2,12 +2,10 @@ import {
     LoadCourses,
     ParamCourses
 } from '../../../../domain/usecases/load-courses/load-course'
-import {
-    HttpRequest,
-    Validation
-} from '../../signup/signup-controller-protocols'
+import { HttpRequest } from '../../signup/signup-controller-protocols'
 import { CourseModel } from '../../../../domain/models/course-model'
 import { LoadCourseController } from './course-controller'
+import { serverError } from '../../../helpers/http/http-helper'
 
 interface SutTypes {
     loadCoursesStub: LoadCourses
@@ -55,5 +53,13 @@ describe('Show Course', () => {
             search: 'any_value',
             page: 1
         })
+    })
+    test('Should return 500 if loadCourse throws', async () => {
+        const { sut, loadCoursesStub } = makeSut()
+        jest.spyOn(loadCoursesStub, 'load').mockReturnValueOnce(
+            new Promise((resolved, reject) => reject(new Error()))
+        )
+        const httpResponse = await sut.handle(makeFakeRequest())
+        expect(httpResponse).toEqual(serverError(new Error()))
     })
 })
