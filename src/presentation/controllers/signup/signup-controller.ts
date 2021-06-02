@@ -40,7 +40,6 @@ export class SignUpController implements Controller {
             }
             const token = await this.authentication.auth({ email, password })
             return ok({ ...account, token })
-            return ok(account)
         } catch (error) {
             return serverError(error)
         }

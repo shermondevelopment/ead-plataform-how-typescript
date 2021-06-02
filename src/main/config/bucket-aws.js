@@ -12,7 +12,7 @@ const configBucket = {
         filename: (req, file, cb) => {
             crypto.randomBytes(16, (err, hash) => {
                 if (err) cb(err)
-                file.key = `${hash.toString('hex')}-${file.originalname}`; // eslint-disable-line
+                file.key = `${hash.toString('hex')}-${file.originalname}` // eslint-disable-line
                 cb(null, file.key)
             })
         }
