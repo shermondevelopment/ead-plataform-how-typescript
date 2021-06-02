@@ -14,7 +14,6 @@
     "test:verbose": "jest --passWithNoTests",
     "test:unit": "npm test -- --watch -c jest-unit-config.ts",
     "test:integration": "npm test -- --watch -c jest-integration-config.ts",
-    "prepare": "npx husky install",
     "test:staged": "npm test -- --findRelatedTests ./src",
     "test:ci": "npm test -- --coverage"
   },
@@ -63,7 +62,6 @@
     "bcrypt": "^5.0.1",
     "dotenv": "^9.0.0",
     "express": "^4.17.1",
-    "fast-glob": "^3.2.5",
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.2",
     "multer-s3": "^2.9.0",
