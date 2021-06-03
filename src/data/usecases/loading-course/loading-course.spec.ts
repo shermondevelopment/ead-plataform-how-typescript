@@ -55,4 +55,9 @@ describe('Loading', () => {
         const promise = sut.load(makeFakeRequest())
         await expect(promise).rejects.toThrow()
     })
+    test('Should return an courses if on success', async () => {
+        const { sut } = makeSut()
+        const courses = await sut.load(makeFakeRequest())
+        expect(courses).toEqual(makeFakeResponseCourse())
+    })
 })
