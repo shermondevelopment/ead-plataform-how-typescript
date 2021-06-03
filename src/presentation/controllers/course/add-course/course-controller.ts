@@ -1,7 +1,11 @@
-import { AddCourse } from '../../../../domain/usecases/add-course/add-course'
 import { badRequest, ok, serverError } from '../../../helpers/http/http-helper'
-import { Controller, HttpRequest, HttpResponse } from '../../../protocols'
-import { Validation } from '../../signup/signup-controller-protocols'
+import {
+    Controller,
+    HttpRequest,
+    HttpResponse,
+    Validation,
+    AddCourse
+} from './course-controller-protocols'
 
 export class AddCourseController implements Controller {
     constructor(
