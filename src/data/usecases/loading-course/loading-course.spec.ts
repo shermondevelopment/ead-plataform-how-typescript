@@ -47,4 +47,12 @@ describe('Loading', () => {
         await sut.load(makeFakeRequest())
         expect(spyRepositoryCourse).toHaveBeenCalledWith(makeFakeRequest())
     })
+    test('Should call if LoadCoursesRepository throws', async () => {
+        const { sut, loadCourseRepository } = makeSut()
+        jest.spyOn(loadCourseRepository, 'load').mockReturnValueOnce(
+            new Promise((resolv, reject) => reject(new Error()))
+        )
+        const promise = sut.load(makeFakeRequest())
+        await expect(promise).rejects.toThrow()
+    })
 })
