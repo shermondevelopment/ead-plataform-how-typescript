@@ -12,7 +12,10 @@ export class DbLoadingCourse implements LoadCourses {
 
     async load(params: ParamCourses): Promise<CourseModel> {
         const { search, page } = params
-        await this.loadingCoursesRepository.load({ search, page })
-        return null
+        const courses = await this.loadingCoursesRepository.load({
+            search,
+            page
+        })
+        return courses
     }
 }
