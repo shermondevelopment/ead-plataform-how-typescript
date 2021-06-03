@@ -1,11 +1,11 @@
 import {
+    HttpRequest,
     LoadCourses,
-    ParamCourses
-} from '../../../../domain/usecases/load-courses/load-course'
-import { HttpRequest } from '../../signup/signup-controller-protocols'
-import { CourseModel } from '../../../../domain/models/course-model'
+    ParamCourses,
+    CourseModel
+} from './course-controller-protocols'
 import { LoadCourseController } from './course-controller'
-import { serverError } from '../../../helpers/http/http-helper'
+import { ok, serverError } from '../../../helpers/http/http-helper'
 
 interface SutTypes {
     loadCoursesStub: LoadCourses
@@ -61,5 +61,10 @@ describe('Show Course', () => {
         )
         const httpResponse = await sut.handle(makeFakeRequest())
         expect(httpResponse).toEqual(serverError(new Error()))
+    })
+    test('Should return 200 if loadCourse return success', async () => {
+        const { sut } = makeSut()
+        const httpResponse = await sut.handle(makeFakeRequest())
+        expect(httpResponse).toEqual(ok(makeFakeResponseCourse()))
     })
 })
