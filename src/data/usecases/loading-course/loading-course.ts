@@ -2,7 +2,7 @@ import {
     LoadCourses,
     ParamCourses,
     LoadCourseRepository,
-    CourseModel
+    CourseArray
 } from './loading-course-protocols'
 
 export class DbLoadingCourse implements LoadCourses {
@@ -10,7 +10,7 @@ export class DbLoadingCourse implements LoadCourses {
         private readonly loadingCoursesRepository: LoadCourseRepository
     ) {}
 
-    async load(params: ParamCourses): Promise<CourseModel> {
+    async load(params: ParamCourses): Promise<CourseArray> {
         const { search, page } = params
         const courses = await this.loadingCoursesRepository.load({
             search,

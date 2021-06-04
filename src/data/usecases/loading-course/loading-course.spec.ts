@@ -1,8 +1,8 @@
 import { DbLoadingCourse } from './loading-course'
 import {
     ParamCourses,
-    CourseModel,
-    LoadCourseRepository
+    LoadCourseRepository,
+    CourseArray
 } from './loading-course-protocols'
 
 interface SutTypes {
@@ -10,12 +10,16 @@ interface SutTypes {
     loadCourseRepository: LoadCourseRepository
 }
 
-const makeFakeResponseCourse = (): CourseModel => ({
-    id: 'any_id',
-    title: 'any_title',
-    figure: 'any_figure',
-    slug: 'any_slug'
-})
+const makeFakeResponseCourse = {
+    courseArray: [
+        {
+            id: 'any_id',
+            title: 'any_title',
+            figure: 'any_figure',
+            slug: 'any_slug'
+        }
+    ]
+}
 
 const makeFakeRequest = () => ({
     search: 'string',
@@ -24,8 +28,10 @@ const makeFakeRequest = () => ({
 
 const makeFakeCourseRepositoryStub = (): LoadCourseRepository => {
     class LoadCourseRepositoryStub implements LoadCourseRepository {
-        async load(param: ParamCourses): Promise<CourseModel> {
-            return new Promise((resolved) => resolved(makeFakeResponseCourse()))
+        async load(param: ParamCourses): Promise<CourseArray> {
+            return new Promise((resolved) =>
+                resolved({ ...makeFakeResponseCourse, next: false })
+            )
         }
     }
     return new LoadCourseRepositoryStub()
@@ -58,6 +64,6 @@ describe('Loading', () => {
     test('Should return an courses if on success', async () => {
         const { sut } = makeSut()
         const courses = await sut.load(makeFakeRequest())
-        expect(courses).toEqual(makeFakeResponseCourse())
+        expect(courses).toEqual({ ...makeFakeResponseCourse, next: false })
     })
 })

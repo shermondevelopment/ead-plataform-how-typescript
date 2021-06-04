@@ -6,6 +6,13 @@ const makeSut = (): CourseMysqlRepository => {
     return new CourseMysqlRepository()
 }
 
+const makeFakeResponse = {
+    id: 'valid_id',
+    title: 'valid_title',
+    figure: 'valid_figure',
+    slug: 'valid-slug'
+}
+
 describe('Course Repository', () => {
     beforeAll(async () => {
         await MysqlHelper.connect()
@@ -31,5 +38,19 @@ describe('Course Repository', () => {
         expect(course.title).toBeTruthy()
         expect(course.slug).toBeTruthy()
         expect(course.figure).toBeTruthy()
+    })
+    test('Should retun an courses on list success', async () => {
+        const sut = makeSut()
+        await sut.add({
+            title: 'valid_title',
+            figure: 'valid_figure',
+            slug: 'valid-slug'
+        })
+        const course = await sut.load({
+            search: '',
+            page: 0
+        })
+        expect(course).toBeTruthy()
+        expect(course.next).toEqual(false)
     })
 })

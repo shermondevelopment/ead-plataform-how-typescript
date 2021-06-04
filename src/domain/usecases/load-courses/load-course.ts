@@ -5,6 +5,11 @@ export interface ParamCourses {
     page?: number
 }
 
+export interface CourseArray {
+    courseArray: Array<CourseModel>
+    next: boolean
+}
+
 export interface LoadCourses {
-    load(params: ParamCourses): Promise<CourseModel>
+    load(params: ParamCourses): Promise<CourseArray>
 }
