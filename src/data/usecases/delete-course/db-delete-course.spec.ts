@@ -1,17 +1,17 @@
 import {
-    Delete,
+    DeleteRepository,
     ReturnDelete,
     DeleteParam
-} from '../../../domain/usecases/delete-course/delete'
+} from './db-delete-course-protocols'
 import { DbDeleteCourse } from './db-delete-course'
 
 interface SutTypes {
     sut: DbDeleteCourse
-    dbDeleteRepositoryStub: Delete
+    dbDeleteRepositoryStub: DeleteRepository
 }
 
-const makeDbDeleteRepositoryStub = (): Delete => {
-    class DbDeleteRepository implements Delete {
+const makeDbDeleteRepositoryStub = (): DeleteRepository => {
+    class DbDeleteRepository implements DeleteRepository {
         async delete(param: DeleteParam): Promise<ReturnDelete> {
             return new Promise((resolved) => resolved({ delete: true }))
         }
