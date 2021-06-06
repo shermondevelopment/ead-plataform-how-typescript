@@ -37,4 +37,12 @@ describe('DbDeleteCourse', () => {
             id: 'any_id'
         })
     })
+    test('Should throw if DbDeleteRepository throws', async () => {
+        const { sut, dbDeleteRepositoryStub } = makeSut()
+        jest.spyOn(dbDeleteRepositoryStub, 'delete').mockReturnValueOnce(
+            new Promise((resolved, reject) => reject(new Error()))
+        )
+        const promise = sut.delete({ id: 'any_id' })
+        await expect(promise).rejects.toThrow()
+    })
 })
