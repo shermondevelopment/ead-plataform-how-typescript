@@ -2,8 +2,7 @@ import {
     HttpRequest,
     LoadCourses,
     ParamCourses,
-    CourseArray,
-    CourseModel
+    CourseArray
 } from './course-controller-protocols'
 import { LoadCourseController } from './course-controller'
 import { ok, serverError } from '../../../helpers/http/http-helper'
