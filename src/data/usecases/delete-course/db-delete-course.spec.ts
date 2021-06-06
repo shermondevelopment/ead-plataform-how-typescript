@@ -45,4 +45,9 @@ describe('DbDeleteCourse', () => {
         const promise = sut.delete({ id: 'any_id' })
         await expect(promise).rejects.toThrow()
     })
+    test('Should return an delete if on success', async () => {
+        const { sut } = makeSut()
+        const response = await sut.delete({ id: 'any_id' })
+        expect(response).toEqual({ delete: true })
+    })
 })
