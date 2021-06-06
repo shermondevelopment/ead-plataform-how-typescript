@@ -9,7 +9,7 @@ export class DbDeleteCourse implements Delete {
     constructor(private readonly deleteCourseRepository: DeleteRepository) {}
 
     async delete(params: DeleteParam): Promise<ReturnDelete> {
-        await this.deleteCourseRepository.delete(params)
-        return null
+        const del = await this.deleteCourseRepository.delete(params)
+        return del
     }
 }
