@@ -12,6 +12,7 @@ import { makeLoadCourseController } from '../factories/controllers/course/load/c
 
 export default (router: Router): void => {
     const adminAuth = adaptMiddleware(makeAuthMiddleware('admin'))
+    const userAuth = adaptMiddleware(makeAuthMiddleware('user'))
     router.post('/signup', adaptRoute(makeSignUpController()))
     router.post('/signin', adaptRoute(makeSigninController()))
     router.post(
@@ -20,5 +21,5 @@ export default (router: Router): void => {
         adminAuth,
         adaptRouteMulter(makeAddCourseController())
     )
-    router.get('/course', adminAuth, adaptRoute(makeLoadCourseController()))
+    router.get('/course', userAuth, adaptRoute(makeLoadCourseController()))
 }

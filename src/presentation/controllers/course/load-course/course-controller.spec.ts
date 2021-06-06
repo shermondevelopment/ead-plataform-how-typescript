@@ -2,6 +2,7 @@ import {
     HttpRequest,
     LoadCourses,
     ParamCourses,
+    CourseArray,
     CourseModel
 } from './course-controller-protocols'
 import { LoadCourseController } from './course-controller'
@@ -19,17 +20,22 @@ const makeFakeRequest = (): HttpRequest => ({
     }
 })
 
-const makeFakeResponseCourse = (): CourseModel => ({
-    id: 'any_id',
-    title: 'any_title',
-    figure: 'any_figure',
-    slug: 'any_slug'
-})
+const makeFakeResponseCourse = {
+    courseArray: [
+        {
+            id: 'any_id',
+            title: 'any_title',
+            figure: 'any_figure',
+            slug: 'any_slug'
+        }
+    ],
+    next: false
+}
 
 const makeLoadCourses = (): LoadCourses => {
     class LoadCoursesStub implements LoadCourses {
-        async load(params: ParamCourses): Promise<CourseModel> {
-            return new Promise((resolve) => resolve(makeFakeResponseCourse()))
+        async load(params: ParamCourses): Promise<CourseArray> {
+            return new Promise((resolve) => resolve(makeFakeResponseCourse))
         }
     }
     return new LoadCoursesStub()
@@ -65,6 +71,6 @@ describe('Show Course', () => {
     test('Should return 200 if loadCourse return success', async () => {
         const { sut } = makeSut()
         const httpResponse = await sut.handle(makeFakeRequest())
-        expect(httpResponse).toEqual(ok(makeFakeResponseCourse()))
+        expect(httpResponse).toEqual(ok(makeFakeResponseCourse))
     })
 })
