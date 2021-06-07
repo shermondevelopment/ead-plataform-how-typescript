@@ -6,13 +6,6 @@ const makeSut = (): CourseMysqlRepository => {
     return new CourseMysqlRepository()
 }
 
-const makeFakeResponse = {
-    id: 'valid_id',
-    title: 'valid_title',
-    figure: 'valid_figure',
-    slug: 'valid-slug'
-}
-
 describe('Course Repository', () => {
     beforeAll(async () => {
         await MysqlHelper.connect()

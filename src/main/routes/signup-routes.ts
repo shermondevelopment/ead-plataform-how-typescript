@@ -9,6 +9,7 @@ import multer from 'multer'
 import configBucket from '../config/bucket-aws'
 import { adaptRouteMulter } from '../adapters/express-route-adapter-how-multer'
 import { makeLoadCourseController } from '../factories/controllers/course/load/course-controller-factory'
+import { makeDeleteCourseController } from '../factories/controllers/course/delete/course-controller-factory'
 
 export default (router: Router): void => {
     const adminAuth = adaptMiddleware(makeAuthMiddleware('admin'))
@@ -22,4 +23,9 @@ export default (router: Router): void => {
         adaptRouteMulter(makeAddCourseController())
     )
     router.get('/course', userAuth, adaptRoute(makeLoadCourseController()))
+    router.delete(
+        '/course/delete/:id',
+        adminAuth,
+        adaptRoute(makeDeleteCourseController())
+    )
 }

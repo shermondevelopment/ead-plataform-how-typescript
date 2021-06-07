@@ -1,37 +1,17 @@
 import { MissingParamError } from '../../../erros'
 import { badRequest, serverError, ok } from '../../../helpers/http/http-helper'
 import { DeleteCourseController } from './course-controller'
-import {
-    HttpRequest,
-    Validation,
-    Delete,
-    DeleteParam,
-    ReturnDelete
-} from './course-controller-protocols'
+import { HttpRequest, Delete } from './course-controller-protocols'
 
 interface SutTypes {
     sut: DeleteCourseController
-    validationStub: Validation
     dbDeleteCourse: Delete
-}
-
-const makeValidationStub = (): Validation => {
-    class ValidationStub implements Validation {
-        validate(input: any): Error {
-            return null
-        }
-    }
-    return new ValidationStub()
 }
 
 const makeFakeDeleteCourse = () => {
     class DbDeleteCourse implements Delete {
-        async delete(param: DeleteParam): Promise<ReturnDelete> {
-            return new Promise((resolved) =>
-                resolved({
-                    delete: true
-                })
-            )
+        async delete(id: string): Promise<any> {
+            return new Promise((resolved) => resolved({ deleted: true }))
         }
     }
     return new DbDeleteCourse()
@@ -39,10 +19,8 @@ const makeFakeDeleteCourse = () => {
 
 const makeSut = (): SutTypes => {
     const dbDeleteCourse = makeFakeDeleteCourse()
-    const validationStub = makeValidationStub()
-    const sut = new DeleteCourseController(validationStub, dbDeleteCourse)
+    const sut = new DeleteCourseController(dbDeleteCourse)
     return {
-        validationStub,
         sut,
         dbDeleteCourse
     }
@@ -55,28 +33,11 @@ const makeFakeRequest = (): HttpRequest => ({
 })
 
 describe('DeleteController Course', () => {
-    test('Should call Validation with correct value', async () => {
-        const { sut, validationStub } = makeSut()
-        const spyValidate = jest.spyOn(validationStub, 'validate')
-        const httpRequest = makeFakeRequest()
-        await sut.handle(makeFakeRequest())
-        expect(spyValidate).toHaveBeenCalledWith(httpRequest.params)
-    })
-    test('should return 400 if Validation returns an error', async () => {
-        const { sut, validationStub } = makeSut()
-        jest.spyOn(validationStub, 'validate').mockReturnValueOnce(
-            new MissingParamError('any_field')
-        )
-        const httpResponse = await sut.handle(makeFakeRequest())
-        expect(httpResponse).toEqual(
-            badRequest(new MissingParamError('any_field'))
-        )
-    })
-    test('should call delete with correct values', async () => {
+    test('Should call delete with correct values', async () => {
         const { sut, dbDeleteCourse } = makeSut()
         const spyDelete = jest.spyOn(dbDeleteCourse, 'delete')
         await sut.handle(makeFakeRequest())
-        expect(spyDelete).toHaveBeenCalledWith({ id: 'any_id' })
+        expect(spyDelete).toHaveBeenCalledWith('any_id')
     })
     test('Should return 500 if delete throws', async () => {
         const { sut, dbDeleteCourse } = makeSut()
@@ -89,6 +50,6 @@ describe('DeleteController Course', () => {
     test('Should return 200 if delete an success', async () => {
         const { sut } = makeSut()
         const httpResponse = await sut.handle(makeFakeRequest())
-        expect(httpResponse).toEqual(ok({ delete: true }))
+        expect(httpResponse).toEqual(ok({ deleted: true }))
     })
 })
