@@ -1,10 +1,10 @@
-import { CourseModel } from '../../../domain/models/course-model'
+import { CourseModel } from '../../../../domain/models/course-model'
 import {
     AddCourse,
     AddCourseModel
-} from '../../../domain/usecases/add-course/add-course'
-import { AddCourseRepository } from '../../protocols/db/course/db-add-course-repository'
-import { Slug } from '../../protocols/remodulate/slug'
+} from '../../../../domain/usecases/add-course/add-course'
+import { AddCourseRepository } from '../../../protocols/db/course/db-add-course-repository'
+import { Slug } from '../../../protocols/remodulate/slug'
 
 export class DbAddCourse implements AddCourse {
     constructor(
