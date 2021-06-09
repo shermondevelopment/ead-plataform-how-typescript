@@ -1,4 +1,4 @@
-import { UpdateCourse } from '../../../../domain/usecases/update-course/update-course'
+import { UpdateCourse } from './update-course-controller-protocols'
 import { ok, serverError } from '../../../helpers/http/http-helper'
 import { Controller, HttpRequest, HttpResponse } from '../../../protocols'
 

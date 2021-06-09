@@ -1,7 +1,9 @@
-import { UpdateCourse } from '../../../../domain/usecases/update-course/update-course'
 import { ok, serverError } from '../../../helpers/http/http-helper'
-import { AddCourseModel } from '../add-course/course-controller-protocols'
 import { UpdateCourseController } from './update-course-controller'
+import {
+    UpdateCourse,
+    AddCourseModel
+} from './update-course-controller-protocols'
 
 interface SutTypes {
     sut: UpdateCourseController
