@@ -1,5 +1,5 @@
 import { UpdateCourse } from '../../../../domain/usecases/update-course/update-course'
-import { serverError } from '../../../helpers/http/http-helper'
+import { ok, serverError } from '../../../helpers/http/http-helper'
 import { AddCourseModel } from '../add-course/course-controller-protocols'
 import { UpdateCourseController } from './update-course-controller'
 
@@ -57,5 +57,13 @@ describe('UpdateControllerCourse', () => {
         )
         const httpResponse = await sut.handle(makeFakeRequest())
         expect(httpResponse).toEqual(serverError(new Error()))
+    })
+    test('Should return 200 if UpdateCourse return success', async () => {
+        const { sut } = makeSut()
+
+        const httpResponse = await sut.handle(makeFakeRequest())
+        expect(httpResponse).toEqual(
+            ok({ title: 'new_title', figure: 'new_figure' })
+        )
     })
 })
