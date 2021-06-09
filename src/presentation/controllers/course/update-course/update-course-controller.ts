@@ -1,5 +1,5 @@
 import { UpdateCourse } from '../../../../domain/usecases/update-course/update-course'
-import { serverError } from '../../../helpers/http/http-helper'
+import { ok, serverError } from '../../../helpers/http/http-helper'
 import { Controller, HttpRequest, HttpResponse } from '../../../protocols'
 
 export class UpdateCourseController implements Controller {
@@ -7,8 +7,10 @@ export class UpdateCourseController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            await this.updateCourse.update(httpRequest.body)
-            return null
+            const updateCourse = await this.updateCourse.update(
+                httpRequest.body
+            )
+            return ok(updateCourse)
         } catch (error) {
             return serverError(error)
         }
