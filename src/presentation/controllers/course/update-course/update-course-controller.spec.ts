@@ -1,4 +1,5 @@
 import { UpdateCourse } from '../../../../domain/usecases/update-course/update-course'
+import { serverError } from '../../../helpers/http/http-helper'
 import { AddCourseModel } from '../add-course/course-controller-protocols'
 import { UpdateCourseController } from './update-course-controller'
 
@@ -48,5 +49,13 @@ describe('UpdateControllerCourse', () => {
             title: 'old_title',
             figure: 'old_figure'
         })
+    })
+    test('Should return 500 if UpdateCourse return throws', async () => {
+        const { sut, updateCourseStub } = makeSut()
+        jest.spyOn(updateCourseStub, 'update').mockReturnValueOnce(
+            new Promise((resolved, reject) => reject(new Error()))
+        )
+        const httpResponse = await sut.handle(makeFakeRequest())
+        expect(httpResponse).toEqual(serverError(new Error()))
     })
 })
