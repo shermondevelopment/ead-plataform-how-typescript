@@ -1,7 +1,9 @@
-import { UpdateCourse } from '../../../../domain/usecases/update-course/update-course'
-import { UpdateCourseRepository } from '../../../protocols/db/course/db-update-course-repository'
-import { Slug } from '../../../protocols/remodulate/slug'
-import { CourseModel } from '../loading-course/loading-course-protocols'
+import {
+    AddCourseModel,
+    Slug,
+    UpdateCourseRepository,
+    UpdateCourse
+} from './db-update-course-protocols'
 
 export class DbUpdateCourse implements UpdateCourse {
     constructor(
@@ -10,8 +12,8 @@ export class DbUpdateCourse implements UpdateCourse {
     ) {}
 
     async update(
-        courseModel: Partial<CourseModel>
-    ): Promise<Partial<CourseModel>> {
+        courseModel: Partial<AddCourseModel>
+    ): Promise<Partial<AddCourseModel>> {
         if (courseModel.title) {
             const update = await this.updateCourseRepository.update({
                 ...courseModel,

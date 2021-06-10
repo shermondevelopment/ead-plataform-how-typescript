@@ -1,6 +1,8 @@
-import { UpdateCourseRepository } from '../../../protocols/db/course/db-update-course-repository'
-import { CourseModel } from '../loading-course/loading-course-protocols'
-import { Slug } from '../../../protocols/remodulate/slug'
+import {
+    AddCourseModel,
+    Slug,
+    UpdateCourseRepository
+} from './db-update-course-protocols'
 import { DbUpdateCourse } from './db-update-course'
 
 interface SutTypes {
@@ -15,6 +17,7 @@ const makeFakeRequest = () => ({
 })
 
 const makeFakeResponse = () => ({
+    id: 'old-id',
     title: 'new_title',
     figure: 'new_figure',
     slug: 'new-title'
@@ -32,8 +35,8 @@ const makeSlugStub = (): Slug => {
 const makeUpdateCourseRepository = (): UpdateCourseRepository => {
     class UpdateCourseRepositoryStub implements UpdateCourseRepository {
         async update(
-            course: Partial<CourseModel>
-        ): Promise<Partial<CourseModel>> {
+            course: Partial<AddCourseModel>
+        ): Promise<Partial<AddCourseModel>> {
             return new Promise((resolved) => resolved(makeFakeResponse()))
         }
     }
@@ -62,7 +65,10 @@ describe('DbUpdateCourse UseCase', () => {
         const { sut, updateCourseRepositoryStub } = makeSut()
         const spyUpdate = jest.spyOn(updateCourseRepositoryStub, 'update')
         await sut.update(makeFakeRequest())
-        expect(spyUpdate).toHaveBeenCalledWith(makeFakeResponse())
+        expect(spyUpdate).toHaveBeenCalledWith({
+            ...makeFakeRequest(),
+            slug: 'new-title'
+        })
     })
     test('Should call UpdateCourseRepository without the title parameter', async () => {
         const { sut, updateCourseRepositoryStub } = makeSut()
