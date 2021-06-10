@@ -64,4 +64,10 @@ describe('DbUpdateCourse UseCase', () => {
         await sut.update(makeFakeRequest())
         expect(spyUpdate).toHaveBeenCalledWith(makeFakeResponse())
     })
+    test('Should call UpdateCourseRepository without the title parameter', async () => {
+        const { sut, updateCourseRepositoryStub } = makeSut()
+        const spyUpdate = jest.spyOn(updateCourseRepositoryStub, 'update')
+        await sut.update({ figure: 'new_figure' })
+        expect(spyUpdate).toHaveBeenCalledWith({ figure: 'new_figure' })
+    })
 })
