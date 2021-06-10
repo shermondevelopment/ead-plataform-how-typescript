@@ -12,16 +12,17 @@ export class DbUpdateCourse implements UpdateCourse {
     ) {}
 
     async update(
+        id: any,
         courseModel: Partial<AddCourseModel>
-    ): Promise<Partial<AddCourseModel>> {
+    ): Promise<number> {
         if (courseModel.title) {
-            const update = await this.updateCourseRepository.update({
+            const update = await this.updateCourseRepository.update(id, {
                 ...courseModel,
                 slug: this.slug.transform(courseModel.title)
             })
             return update
         }
-        const update = await this.updateCourseRepository.update({
+        const update = await this.updateCourseRepository.update(id, {
             ...courseModel
         })
         return update

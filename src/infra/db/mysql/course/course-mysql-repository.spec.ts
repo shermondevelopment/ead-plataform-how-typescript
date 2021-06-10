@@ -1,10 +1,13 @@
 import Course from '../entity/courses'
 import { MysqlHelper } from '../helpers/mysql-helper'
+import { Repository } from 'typeorm'
 import { CourseMysqlRepository } from './course-mysql-repository'
 
 const makeSut = (): CourseMysqlRepository => {
     return new CourseMysqlRepository()
 }
+
+let courseRepository: Repository<Course>
 
 describe('Course Repository', () => {
     beforeAll(async () => {
@@ -15,7 +18,7 @@ describe('Course Repository', () => {
     })
 
     beforeEach(async () => {
-        const courseRepository = MysqlHelper.getRepository(Course)
+        courseRepository = MysqlHelper.getRepository(Course)
         await courseRepository.delete({ figure: 'valid_figure' })
     })
 
@@ -45,5 +48,19 @@ describe('Course Repository', () => {
         })
         expect(course).toBeTruthy()
         expect(course.next).toEqual(false)
+    })
+    test('Should return the course updated', async () => {
+        const sut = makeSut()
+        const course = courseRepository.create({
+            title: 'valid_title',
+            figure: 'valid_figure',
+            slug: 'valid-slug'
+        })
+        const courseSave = await courseRepository.save(course)
+        const update = await sut.update(
+            { id: courseSave.id },
+            { title: 'valid_title' }
+        )
+        expect(update).toBe(1)
     })
 })

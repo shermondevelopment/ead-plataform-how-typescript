@@ -7,10 +7,8 @@ export class UpdateCourseController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            const updateCourse = await this.updateCourse.update(
-                httpRequest.body
-            )
-            return ok(updateCourse)
+            await this.updateCourse.update(httpRequest.params, httpRequest.body)
+            return ok({ success: 'updated successfully' })
         } catch (error) {
             return serverError(error)
         }

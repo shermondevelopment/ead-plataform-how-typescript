@@ -21,7 +21,6 @@ services:
         volumes:
             - ./dist/:/usr/src/clean-node-api/dist/
             - ./package.json:/usr/src/clean-node-api/package.json
-            - ./ormconfig.env:/usr/src/clean-node-api/ormconfig.env
             - ./.env:/usr/src/clean-node-api/.env
         ports:
             - '5050:5050'

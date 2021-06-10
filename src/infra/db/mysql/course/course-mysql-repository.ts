@@ -2,6 +2,7 @@ import { Repository } from 'typeorm'
 import { AddCourseRepository } from '../../../../data/protocols/db/course/db-add-course-repository'
 import { LoadCourseRepository } from '../../../../data/protocols/db/course/db-load-course-repository'
 import { DeleteRepository } from '../../../../data/protocols/db/course/db-delete-course-repository'
+import { UpdateCourseRepository } from '../../../../data/protocols/db/course/db-update-course-repository'
 import { Like } from 'typeorm'
 import { CourseModel } from '../../../../domain/models/course-model'
 import { AddCourseModel } from '../../../../domain/usecases/add-course/add-course'
@@ -13,7 +14,11 @@ import Course from '../entity/courses'
 import { MysqlHelper } from '../helpers/mysql-helper'
 
 export class CourseMysqlRepository
-    implements AddCourseRepository, LoadCourseRepository, DeleteRepository {
+    implements
+        AddCourseRepository,
+        LoadCourseRepository,
+        DeleteRepository,
+        UpdateCourseRepository {
     private readonly courseRepository: Repository<Course>
 
     constructor() {
@@ -50,5 +55,14 @@ export class CourseMysqlRepository
 
     async delete(id: string): Promise<any> {
         await this.courseRepository.delete({ id })
+    }
+    async update(
+        id: any,
+        courseModel: Partial<AddCourseModel>
+    ): Promise<number> {
+        const updated = await this.courseRepository.update(id, {
+            ...courseModel
+        })
+        return updated.affected
     }
 }

@@ -11,23 +11,24 @@ interface SutTypes {
 }
 
 const makeFakeRequest = () => ({
+    params: {
+        id: 'valid_id'
+    },
     body: {
         title: 'old_title',
         figure: 'old_figure'
     }
 })
 
-const makeFakeResponse = () => ({
-    title: 'new_title',
-    figure: 'new_figure'
-})
+const makeFakeResponse = 1
 
 const makeFakeUpdateStub = (): UpdateCourse => {
     class UpdateStub implements UpdateCourse {
         async update(
+            id: string,
             courseModel: Partial<AddCourseModel>
-        ): Promise<Partial<AddCourseModel>> {
-            return new Promise((resolved) => resolved(makeFakeResponse()))
+        ): Promise<number> {
+            return new Promise((resolved) => resolved(1))
         }
     }
     return new UpdateStub()
@@ -47,10 +48,13 @@ describe('UpdateControllerCourse', () => {
         const { sut, updateCourseStub } = makeSut()
         const spyUpdate = jest.spyOn(updateCourseStub, 'update')
         await sut.handle(makeFakeRequest())
-        expect(spyUpdate).toHaveBeenCalledWith({
-            title: 'old_title',
-            figure: 'old_figure'
-        })
+        expect(spyUpdate).toHaveBeenCalledWith(
+            { id: 'valid_id' },
+            {
+                title: 'old_title',
+                figure: 'old_figure'
+            }
+        )
     })
     test('Should return 500 if UpdateCourse return throws', async () => {
         const { sut, updateCourseStub } = makeSut()
@@ -62,10 +66,7 @@ describe('UpdateControllerCourse', () => {
     })
     test('Should return 200 if UpdateCourse return success', async () => {
         const { sut } = makeSut()
-
         const httpResponse = await sut.handle(makeFakeRequest())
-        expect(httpResponse).toEqual(
-            ok({ title: 'new_title', figure: 'new_figure' })
-        )
+        expect(httpResponse).toEqual(ok({ success: 'updated successfully' }))
     })
 })
