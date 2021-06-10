@@ -6,11 +6,12 @@ import { DbUpdateCourse } from './db-update-course'
 interface SutTypes {
     sut: DbUpdateCourse
     slugStub: Slug
+    updateCourseRepositoryStub: UpdateCourseRepository
 }
 
 const makeFakeRequest = () => ({
-    title: 'old_title',
-    figure: 'old_figure'
+    title: 'new_title',
+    figure: 'new_figure'
 })
 
 const makeFakeResponse = () => ({
@@ -40,12 +41,13 @@ const makeUpdateCourseRepository = (): UpdateCourseRepository => {
 }
 
 const makeSut = (): SutTypes => {
-    // const updateCourseRepositoryStub = makeUpdateCourseRepository()
+    const updateCourseRepositoryStub = makeUpdateCourseRepository()
     const slugStub = makeSlugStub()
-    const sut = new DbUpdateCourse(slugStub)
+    const sut = new DbUpdateCourse(slugStub, updateCourseRepositoryStub)
     return {
         sut,
-        slugStub
+        slugStub,
+        updateCourseRepositoryStub
     }
 }
 
@@ -54,6 +56,12 @@ describe('DbUpdateCourse UseCase', () => {
         const { sut, slugStub } = makeSut()
         const spySlug = jest.spyOn(slugStub, 'transform')
         await sut.update(makeFakeRequest())
-        expect(spySlug).toHaveBeenCalledWith('old_title')
+        expect(spySlug).toHaveBeenCalledWith('new_title')
+    })
+    test('Should call UpdateCourseRepository how correct values', async () => {
+        const { sut, updateCourseRepositoryStub } = makeSut()
+        const spyUpdate = jest.spyOn(updateCourseRepositoryStub, 'update')
+        await sut.update(makeFakeRequest())
+        expect(spyUpdate).toHaveBeenCalledWith(makeFakeResponse())
     })
 })
