@@ -78,4 +78,9 @@ describe('DbUpdateCourse UseCase', () => {
         const promise = sut.update({ figure: 'new_figure' })
         await expect(promise).rejects.toThrow()
     })
+    test('Should UpdateCourseRepository return value how success', async () => {
+        const { sut } = makeSut()
+        const updateCourse = await sut.update(makeFakeRequest())
+        expect(updateCourse).toEqual(makeFakeResponse())
+    })
 })
