@@ -19,7 +19,9 @@ export class DbUpdateCourse implements UpdateCourse {
             })
             return update
         }
-        await this.updateCourseRepository.update({ ...courseModel })
-        return null
+        const update = await this.updateCourseRepository.update({
+            ...courseModel
+        })
+        return update
     }
 }
