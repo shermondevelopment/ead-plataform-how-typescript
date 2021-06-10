@@ -70,4 +70,12 @@ describe('DbUpdateCourse UseCase', () => {
         await sut.update({ figure: 'new_figure' })
         expect(spyUpdate).toHaveBeenCalledWith({ figure: 'new_figure' })
     })
+    test('Should throws UpdateCourseRepository return throws', async () => {
+        const { sut, updateCourseRepositoryStub } = makeSut()
+        jest.spyOn(updateCourseRepositoryStub, 'update').mockReturnValue(
+            new Promise((resolved, reject) => reject(new Error()))
+        )
+        const promise = sut.update({ figure: 'new_figure' })
+        await expect(promise).rejects.toThrow()
+    })
 })
