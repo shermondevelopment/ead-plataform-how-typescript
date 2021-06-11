@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { MysqlHelper } from '../infra/db/mysql/helpers/mysql-helper'
 import dotenv from 'dotenv'
 

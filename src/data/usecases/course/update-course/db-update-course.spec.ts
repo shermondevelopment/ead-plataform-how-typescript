@@ -37,8 +37,8 @@ const makeUpdateCourseRepository = (): UpdateCourseRepository => {
         async update(
             id: any,
             course: Partial<AddCourseModel>
-        ): Promise<Partial<AddCourseModel>> {
-            return new Promise((resolved) => resolved(makeFakeResponse()))
+        ): Promise<number> {
+            return new Promise((resolved) => resolved(1))
         }
     }
     return new UpdateCourseRepositoryStub()
@@ -97,6 +97,6 @@ describe('DbUpdateCourse UseCase', () => {
             { id: 'valid_id' },
             makeFakeRequest()
         )
-        expect(updateCourse).toEqual(makeFakeResponse())
+        expect(updateCourse).toBe(1)
     })
 })
