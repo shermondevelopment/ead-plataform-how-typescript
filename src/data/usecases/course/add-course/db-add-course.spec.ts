@@ -1,11 +1,11 @@
 import { CourseModel } from '../../../../domain/models/course-model'
 import {
     AddCourse,
-    AddCourseModel
-} from '../../../../domain/usecases/add-course/add-course'
-import { AddCourseRepository } from '../../../protocols/db/course/db-add-course-repository'
-import { Slug } from '../../../protocols/remodulate/slug'
-import { DbAddCourse } from './add-course'
+    AddCourseModel,
+    AddCourseRepository,
+    Slug
+} from './db-add-course-protocols'
+import { DbAddCourse } from './db-add-course'
 
 interface SutTypes {
     sut: AddCourse
