@@ -54,8 +54,10 @@ export class CourseMysqlRepository
     }
 
     async delete(id: string): Promise<any> {
-        await this.courseRepository.delete({ id })
+        const course = await this.courseRepository.findOne({ id })
+        await this.courseRepository.remove(course)
     }
+
     async update(
         id: any,
         courseModel: Partial<AddCourseModel>

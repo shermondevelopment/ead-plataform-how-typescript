@@ -3,8 +3,12 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     CreateDateColumn,
-    UpdateDateColumn
+    UpdateDateColumn,
+    BeforeRemove
 } from 'typeorm'
+import aws from 'aws-sdk'
+
+const s3 = new aws.S3()
 
 @Entity('courses')
 export default class Course {
@@ -25,4 +29,14 @@ export default class Course {
 
     @UpdateDateColumn()
     updated_at: Date
+
+    @BeforeRemove()
+    async removeObject(): Promise<void> {
+        await s3
+            .deleteObject({
+                Bucket: 'brainly-figure-course',
+                Key: this.figure
+            })
+            .promise()
+    }
 }
