@@ -1,21 +1,20 @@
 import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm'
 
-export class AddColumnRoleAccounts1621993222040 implements MigrationInterface {
-    name = 'AddColumnRoleAccounts1621993222040'
+export class AddColumnViewFreeTime1623447621695 implements MigrationInterface {
+    name = 'AddColumnViewFreeTime1623447621695'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.addColumn(
             'accounts',
             new TableColumn({
-                name: 'role',
-                type: 'varchar',
-                isNullable: false,
-                default: "'user'"
+                name: 'view_free_time',
+                type: 'datetime',
+                isNullable: false
             })
         )
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropColumn('accounts', 'role')
+        await queryRunner.dropColumn('accounts', 'view_free_time')
     }
 }
