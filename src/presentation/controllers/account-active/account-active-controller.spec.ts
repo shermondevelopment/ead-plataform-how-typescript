@@ -4,6 +4,11 @@ import {
     Token
 } from '../../../domain/usecases/active-account/active-account'
 
+interface SutTypes {
+    sut: ActiveAccountController
+    activeAccount: ActiveAccount
+}
+
 const fakeRequest = () => ({
     query: {
         token: 'any_token'
@@ -19,11 +24,19 @@ const makeFakeActiveAccount = (): ActiveAccount => {
     return new ActiveAccountStub()
 }
 
+const makeSut = (): SutTypes => {
+    const activeAccount = makeFakeActiveAccount()
+    const sut = new ActiveAccountController(activeAccount)
+    return {
+        activeAccount,
+        sut
+    }
+}
+
 describe('Active Account', () => {
     test('Should call accountActive how correct values', async () => {
-        const activeAccount = makeFakeActiveAccount()
+        const { sut, activeAccount } = makeSut()
         const spyActiveAccount = jest.spyOn(activeAccount, 'accountActive')
-        const sut = new ActiveAccountController(activeAccount)
         await sut.handle(fakeRequest())
         expect(spyActiveAccount).toHaveBeenCalledWith({ token: 'any_token' })
     })
