@@ -5,6 +5,7 @@ export interface AddAccountModel {
     email: string
     sexo: string
     password: string
+    token_account?: string
 }
 
 export interface AddAccount {

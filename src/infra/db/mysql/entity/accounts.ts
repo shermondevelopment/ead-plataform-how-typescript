@@ -1,4 +1,5 @@
 import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import crypt from 'crypto'
 
 @Entity('accounts')
 export default class Accounts {
@@ -25,6 +26,9 @@ export default class Accounts {
 
     @Column()
     view_free_time: Date
+
+    @Column({ select: false })
+    token_account: string
 
     @BeforeInsert()
     addDate(): void {

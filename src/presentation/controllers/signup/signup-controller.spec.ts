@@ -4,7 +4,9 @@ import {
     AccountModel,
     Validation,
     Authentication,
-    AuthenticationModel
+    AuthenticationModel,
+    SendEmail,
+    EmailSendParams
 } from './signup-controller-protocols'
 import {
     MissingParamError,
@@ -19,12 +21,14 @@ import {
 } from '../../helpers/http/http-helper'
 import { HttpRequest } from '../../protocols/http'
 import { SignUpController } from './signup-controller'
+import { HashRandomGenerate } from '../../protocols'
 
 interface SutTypes {
     sut: SignUpController
     addAccountStub: AddAccount
     validationStub: Validation
     authenticationStub: Authentication
+    sendEmail: SendEmail
 }
 
 const makeAuthentication = (): Authentication => {
@@ -70,20 +74,43 @@ const makeValidation = (): Validation => {
     return new ValidationStub()
 }
 
+const makeSendEmail = (): SendEmail => {
+    class EmailSendStub implements SendEmail {
+        async sendEmail(paramsEmail: EmailSendParams): Promise<void> {
+            return new Promise((resolved) => resolved(null))
+        }
+    }
+    return new EmailSendStub()
+}
+
+const makeRandomGenerateHash = (): HashRandomGenerate => {
+    class HashGenerateAdapterStub implements HashRandomGenerate {
+        generateHash(): string {
+            return 'any_hash'
+        }
+    }
+    return new HashGenerateAdapterStub()
+}
+
 const makeSut = (): SutTypes => {
     const authenticationStub = makeAuthentication()
     const addAccountStub = makeAddAccountStub()
     const validationStub = makeValidation()
+    const sendEmail = makeSendEmail()
+    const hashRandomGenerate = makeRandomGenerateHash()
     const sut = new SignUpController(
         addAccountStub,
         validationStub,
-        authenticationStub
+        authenticationStub,
+        sendEmail,
+        hashRandomGenerate
     )
     return {
         sut,
         addAccountStub,
         validationStub,
-        authenticationStub
+        authenticationStub,
+        sendEmail
     }
 }
 
@@ -144,5 +171,16 @@ describe('SignUpController', () => {
         )
         const httpResponse = await sut.handle(makeFakeRequest())
         expect(httpResponse).toEqual(forbidden(new EmailInUseError()))
+    })
+    test('Shoulf call EmailSend how correct values', async () => {
+        const { sut, sendEmail } = makeSut()
+        const sendEmailSpy = jest.spyOn(sendEmail, 'sendEmail')
+        await sut.handle(makeFakeRequest())
+        expect(sendEmailSpy).toHaveBeenCalledWith({
+            to: 'any_email@mail.com',
+            subject: 'Confirmação de e-mail',
+            template: 'confirm_email',
+            context: { token: 'any_hash' }
+        })
     })
 })

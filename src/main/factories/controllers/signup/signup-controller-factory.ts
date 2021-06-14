@@ -4,12 +4,17 @@ import { makeDbAuthentication } from '../../usecases/authentication/db-authentic
 import { makeSignUpValidation } from './signup-validators'
 import { makeDbAddAccount } from '../../usecases/add-account/db-add-account-factory'
 import { makeLogControllerDecorator } from '../../decorators/log-controller-decorator-factory'
+import mailer from '../../../lib/mail-settings'
+import { EmailSendAdapter } from '../../../../presentation/utils/email-send-adapter'
+import { HashGenerateAdapter } from '../../../../presentation/utils/hash-generate-adapter'
 
 export const makeSignUpController = (): Controller => {
     const controller = new SignUpController(
         makeDbAddAccount(),
         makeSignUpValidation(),
-        makeDbAuthentication()
+        makeDbAuthentication(),
+        new EmailSendAdapter(mailer),
+        new HashGenerateAdapter()
     )
     return makeLogControllerDecorator(controller)
 }
