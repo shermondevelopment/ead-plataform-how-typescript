@@ -1,6 +1,6 @@
 import { ActiveAccount } from '../../../domain/usecases/active-account/active-account'
 import { InvalidParamError } from '../../erros'
-import { badRequest, serverError } from '../../helpers/http/http-helper'
+import { badRequest, ok, serverError } from '../../helpers/http/http-helper'
 import { Controller, HttpRequest, HttpResponse } from '../../protocols'
 
 export class ActiveAccountController implements Controller {
@@ -13,7 +13,7 @@ export class ActiveAccountController implements Controller {
             if (!active) {
                 return badRequest(new InvalidParamError('token'))
             }
-            return null
+            return ok(active)
         } catch (error) {
             return serverError(error)
         }
