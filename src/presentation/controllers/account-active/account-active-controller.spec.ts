@@ -3,7 +3,7 @@ import {
     ActiveAccount,
     Token
 } from '../../../domain/usecases/active-account/active-account'
-import { badRequest } from '../../helpers/http/http-helper'
+import { badRequest, serverError } from '../../helpers/http/http-helper'
 import { InvalidParamError } from '../../erros'
 
 interface SutTypes {
@@ -49,5 +49,13 @@ describe('Active Account', () => {
         )
         const httpResponse = await sut.handle(fakeRequest())
         expect(httpResponse).toEqual(badRequest(new InvalidParamError('token')))
+    })
+    test('Should return throw if ActiveAccount return throw', async () => {
+        const { sut, activeAccount } = makeSut()
+        jest.spyOn(activeAccount, 'accountActive').mockReturnValueOnce(
+            new Promise((resolved, reject) => reject(new Error()))
+        )
+        const httpResponse = await sut.handle(fakeRequest())
+        expect(httpResponse).toEqual(serverError(new Error()))
     })
 })
