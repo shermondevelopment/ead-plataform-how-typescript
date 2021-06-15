@@ -1,4 +1,6 @@
 import { ActiveAccount } from '../../../domain/usecases/active-account/active-account'
+import { InvalidParamError } from '../../erros'
+import { badRequest } from '../../helpers/http/http-helper'
 import { Controller, HttpRequest, HttpResponse } from '../../protocols'
 
 export class ActiveAccountController implements Controller {
@@ -6,7 +8,10 @@ export class ActiveAccountController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         const { token } = httpRequest.query
-        await this.accountActive.accountActive({ token })
+        const active = await this.accountActive.accountActive({ token })
+        if (!active) {
+            return badRequest(new InvalidParamError('token'))
+        }
         return null
     }
 }
