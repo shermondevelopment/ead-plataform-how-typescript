@@ -3,7 +3,7 @@ import {
     ActiveAccount,
     Token
 } from '../../../domain/usecases/active-account/active-account'
-import { badRequest, serverError } from '../../helpers/http/http-helper'
+import { badRequest, ok, serverError } from '../../helpers/http/http-helper'
 import { InvalidParamError } from '../../erros'
 
 interface SutTypes {
@@ -57,5 +57,10 @@ describe('Active Account', () => {
         )
         const httpResponse = await sut.handle(fakeRequest())
         expect(httpResponse).toEqual(serverError(new Error()))
+    })
+    test('Should return 200 if ActiveAccount return success', async () => {
+        const { sut } = makeSut()
+        const httpResponse = await sut.handle(fakeRequest())
+        expect(httpResponse).toEqual(ok(true))
     })
 })
