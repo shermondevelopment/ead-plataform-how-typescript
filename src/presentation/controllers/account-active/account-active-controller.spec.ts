@@ -1,10 +1,12 @@
 import { ActiveAccountController } from './account-active-controller'
 import {
     ActiveAccount,
-    Token
-} from '../../../domain/usecases/active-account/active-account'
-import { badRequest, ok, serverError } from '../../helpers/http/http-helper'
-import { InvalidParamError } from '../../erros'
+    Token,
+    badRequest,
+    ok,
+    serverError,
+    InvalidParamError
+} from './account-active-controller-protocols'
 
 interface SutTypes {
     sut: ActiveAccountController

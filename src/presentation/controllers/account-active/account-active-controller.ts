@@ -1,6 +1,10 @@
-import { ActiveAccount } from '../../../domain/usecases/active-account/active-account'
-import { InvalidParamError } from '../../erros'
-import { badRequest, ok, serverError } from '../../helpers/http/http-helper'
+import {
+    ActiveAccount,
+    InvalidParamError,
+    badRequest,
+    ok,
+    serverError
+} from './account-active-controller-protocols'
 import { Controller, HttpRequest, HttpResponse } from '../../protocols'
 
 export class ActiveAccountController implements Controller {
