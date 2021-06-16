@@ -1,5 +1,5 @@
 import {
-    ActiveAccount,
+    EnableAccount,
     InvalidParamError,
     badRequest,
     ok,
@@ -8,12 +8,12 @@ import {
 import { Controller, HttpRequest, HttpResponse } from '../../protocols'
 
 export class ActiveAccountController implements Controller {
-    constructor(private readonly accountActive: ActiveAccount) {}
+    constructor(private readonly accountActive: EnableAccount) {}
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
             const { token } = httpRequest.query
-            const active = await this.accountActive.accountActive({ token })
+            const active = await this.accountActive.enabled({ token })
             if (!active) {
                 return badRequest(new InvalidParamError('token'))
             }

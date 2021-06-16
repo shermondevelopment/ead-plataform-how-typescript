@@ -2,6 +2,6 @@ export interface Token {
     token: string
 }
 
-export interface ActiveAccount {
-    accountActive(token: Token): Promise<boolean>
+export interface EnableAccount {
+    enabled(token: Token): Promise<boolean>
 }

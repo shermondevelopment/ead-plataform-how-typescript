@@ -1,6 +1,6 @@
 import { ActiveAccountController } from './account-active-controller'
 import {
-    ActiveAccount,
+    EnableAccount,
     Token,
     badRequest,
     ok,
@@ -10,7 +10,7 @@ import {
 
 interface SutTypes {
     sut: ActiveAccountController
-    activeAccount: ActiveAccount
+    enableAccount: EnableAccount
 }
 
 const fakeRequest = () => ({
@@ -19,9 +19,9 @@ const fakeRequest = () => ({
     }
 })
 
-const makeFakeActiveAccount = (): ActiveAccount => {
-    class ActiveAccountStub implements ActiveAccount {
-        async accountActive(token: Token): Promise<boolean> {
+const makeFakeActiveAccount = (): EnableAccount => {
+    class ActiveAccountStub implements EnableAccount {
+        async enabled(token: Token): Promise<boolean> {
             return new Promise((resolved) => resolved(true))
         }
     }
@@ -29,32 +29,32 @@ const makeFakeActiveAccount = (): ActiveAccount => {
 }
 
 const makeSut = (): SutTypes => {
-    const activeAccount = makeFakeActiveAccount()
-    const sut = new ActiveAccountController(activeAccount)
+    const enableAccount = makeFakeActiveAccount()
+    const sut = new ActiveAccountController(enableAccount)
     return {
-        activeAccount,
+        enableAccount,
         sut
     }
 }
 
 describe('Active Account', () => {
     test('Should call accountActive how correct values', async () => {
-        const { sut, activeAccount } = makeSut()
-        const spyActiveAccount = jest.spyOn(activeAccount, 'accountActive')
+        const { sut, enableAccount } = makeSut()
+        const spyActiveAccount = jest.spyOn(enableAccount, 'enabled')
         await sut.handle(fakeRequest())
         expect(spyActiveAccount).toHaveBeenCalledWith({ token: 'any_token' })
     })
     test('Should return false if ActiveAccount return false', async () => {
-        const { sut, activeAccount } = makeSut()
-        jest.spyOn(activeAccount, 'accountActive').mockReturnValueOnce(
+        const { sut, enableAccount } = makeSut()
+        jest.spyOn(enableAccount, 'enabled').mockReturnValueOnce(
             new Promise((resolved) => resolved(false))
         )
         const httpResponse = await sut.handle(fakeRequest())
         expect(httpResponse).toEqual(badRequest(new InvalidParamError('token')))
     })
     test('Should return throw if ActiveAccount return throw', async () => {
-        const { sut, activeAccount } = makeSut()
-        jest.spyOn(activeAccount, 'accountActive').mockReturnValueOnce(
+        const { sut, enableAccount } = makeSut()
+        jest.spyOn(enableAccount, 'enabled').mockReturnValueOnce(
             new Promise((resolved, reject) => reject(new Error()))
         )
         const httpResponse = await sut.handle(fakeRequest())

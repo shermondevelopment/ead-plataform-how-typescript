@@ -145,4 +145,18 @@ describe('Account Mongo Repository', () => {
         const account = await sut.loadByToken('any_email@mail.com')
         expect(account).toBeFalsy()
     })
+    test('Should return true if EnableAccount return true', async () => {
+        const sut = makeSut()
+        const account = accountRepository.create({
+            name: 'any_name',
+            email: 'any_email@mail.com',
+            sexo: 'M',
+            password: 'any_password',
+            token: 'any_token',
+            token_account: '1234'
+        })
+        const courseDb = await accountRepository.save(account)
+        const response = await sut.enabled({ token: courseDb.token_account })
+        expect(response).toBe(true)
+    })
 })

@@ -27,6 +27,9 @@ export default class Accounts {
     @Column()
     view_free_time: Date
 
+    @Column()
+    status?: boolean
+
     @Column({ select: false })
     token_account: string
 
