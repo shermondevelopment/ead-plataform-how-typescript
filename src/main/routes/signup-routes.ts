@@ -11,6 +11,7 @@ import { adaptRouteMulter } from '../adapters/express-route-adapter-how-multer'
 import { makeLoadCourseController } from '../factories/controllers/course/load/course-controller-factory'
 import { makeDeleteCourseController } from '../factories/controllers/course/delete/course-controller-factory'
 import { makeUpdateController } from '../factories/controllers/course/update/course-controller-factory'
+import { makeEnableAccountController } from '../factories/controllers/enable-account/enable-account-controller-factory'
 
 export default (router: Router): void => {
     const adminAuth = adaptMiddleware(makeAuthMiddleware('admin'))
@@ -23,6 +24,7 @@ export default (router: Router): void => {
         adminAuth,
         adaptRouteMulter(makeAddCourseController())
     )
+    router.get('/enable-account', adaptRoute(makeEnableAccountController()))
     router.get('/course', userAuth, adaptRoute(makeLoadCourseController()))
     router.delete(
         '/course/delete/:id',
