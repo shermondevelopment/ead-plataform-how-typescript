@@ -1,21 +1,25 @@
 import {
     ForgotPassword,
-    ForgotPasswordRequest
-} from '../../../domain/usecases/forgot-password/forgot-password'
-import { MissingParamError } from '../../erros'
+    ForgotPasswordRequest,
+    Validation,
+    MissingParamError
+} from './forgot-password-controller-protocols'
+
 import {
     badRequest,
     notDataExists,
     ok,
     serverError
 } from '../account-enable/account-active-controller-protocols'
-import { Validation } from '../signup/signup-controller-protocols'
 import { ForgotPasswordController } from './forgot-password-controller'
+import { EmailSendParams, HashRandomGenerate, SendEmail } from '../../protocols'
 
 interface SutTypes {
     validationStub: Validation
     sut: ForgotPasswordController
     forgotPassword: ForgotPassword
+    tokenResetPassword: HashRandomGenerate
+    tokenResetExpired: number
 }
 
 const makeValidationsStub = (): Validation => {
@@ -29,21 +33,55 @@ const makeValidationsStub = (): Validation => {
 
 const makeForgotPasswordStub = (): ForgotPassword => {
     class DbForgotPassword implements ForgotPassword {
-        async email(email: ForgotPasswordRequest): Promise<boolean> {
+        async request(data: ForgotPasswordRequest): Promise<boolean> {
             return new Promise((resolved) => resolved(true))
         }
     }
     return new DbForgotPassword()
 }
 
+const makeRandomGenerateHash = (): HashRandomGenerate => {
+    class HashGenerateAdapterStub implements HashRandomGenerate {
+        generateHash(): string {
+            return 'any_hash'
+        }
+    }
+    return new HashGenerateAdapterStub()
+}
+
+const makeSendEmail = (): SendEmail => {
+    class EmailSendStub implements SendEmail {
+        async sendEmail(paramsEmail: EmailSendParams): Promise<void> {
+            return new Promise((resolved) => resolved(null))
+        }
+    }
+    return new EmailSendStub()
+}
+
+const makeFakeData = (): number => {
+    const data = new Date()
+    return data.setDate(data.getHours() + 48)
+}
+
 const makeSut = (): SutTypes => {
     const validationStub = makeValidationsStub()
     const forgotPassword = makeForgotPasswordStub()
-    const sut = new ForgotPasswordController(validationStub, forgotPassword)
+    const tokenResetPassword = makeRandomGenerateHash()
+    const tokenResetExpired = makeFakeData()
+    const emailSend = makeSendEmail()
+    const sut = new ForgotPasswordController(
+        validationStub,
+        forgotPassword,
+        tokenResetPassword,
+        tokenResetExpired,
+        emailSend
+    )
     return {
         sut,
         validationStub,
-        forgotPassword
+        forgotPassword,
+        tokenResetPassword,
+        tokenResetExpired
     }
 }
 
@@ -72,15 +110,24 @@ describe('ForgotPassword', () => {
         )
     })
     test('Should call ForgotPassword how correct values', async () => {
-        const { sut, forgotPassword } = makeSut()
-        const spyForgotPassword = jest.spyOn(forgotPassword, 'email')
+        const {
+            sut,
+            forgotPassword,
+            tokenResetPassword,
+            tokenResetExpired
+        } = makeSut()
+        const spyForgotPassword = jest.spyOn(forgotPassword, 'request')
         const httpRequest = makeFakeRequest()
         await sut.handle(httpRequest)
-        expect(spyForgotPassword).toHaveBeenCalledWith(httpRequest.body)
+        expect(spyForgotPassword).toHaveBeenCalledWith({
+            email: httpRequest.body.email,
+            tokenResetExpired,
+            tokenResetPassword: tokenResetPassword.generateHash()
+        })
     })
     test('Should return MissingParamError if ForgotPassword return false', async () => {
         const { sut, forgotPassword } = makeSut()
-        jest.spyOn(forgotPassword, 'email').mockReturnValueOnce(
+        jest.spyOn(forgotPassword, 'request').mockReturnValueOnce(
             new Promise((resolved) => resolved(false))
         )
         const httpResponse = await sut.handle(makeFakeRequest())
@@ -88,7 +135,7 @@ describe('ForgotPassword', () => {
     })
     test('Should return 500 if ForgotPassword throws', async () => {
         const { sut, forgotPassword } = makeSut()
-        jest.spyOn(forgotPassword, 'email').mockReturnValueOnce(
+        jest.spyOn(forgotPassword, 'request').mockReturnValueOnce(
             new Promise((resolved, reject) => reject(new Error()))
         )
         const httpResponse = await sut.handle(makeFakeRequest())

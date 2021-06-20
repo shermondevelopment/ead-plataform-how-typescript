@@ -8,7 +8,7 @@
     "build": "rimraf dist && tsc",
     "dev": "ts-node src/main/server.ts",
     "up": "npm run build && npm run copy-files && docker-compose up -d",
-    "typeorm": "ts-node ./node_modules/typeorm/cli.js",
+    "typeorm": "ts-node --transpile-only ./node_modules/typeorm/cli.js",
     "typeorm:production": "./node_modules/typeorm/cli.js",
     "copy-files": "copyfiles -u 1 src/main/resources/mail/auth/confirm_email.html  dist/",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
@@ -26,7 +26,6 @@
   },
   "lint-staged": {
     "*.ts": [
-      "npx prettier --write src/",
       "npm run test:staged"
     ]
   },

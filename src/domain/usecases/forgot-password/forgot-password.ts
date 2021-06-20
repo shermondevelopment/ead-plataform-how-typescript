@@ -1,7 +1,9 @@
 export interface ForgotPasswordRequest {
-    email: 'string'
+    email: string
+    tokenResetPassword: string
+    tokenResetExpired: number
 }
 
 export interface ForgotPassword {
-    email(email: ForgotPasswordRequest): Promise<boolean>
+    request(data: ForgotPasswordRequest): Promise<boolean>
 }

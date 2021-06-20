@@ -1,19 +1,25 @@
-import { ForgotPassword } from '../../../domain/usecases/forgot-password/forgot-password'
-import { Controller, HttpRequest, HttpResponse } from '../../protocols'
+import {
+    Controller,
+    HttpRequest,
+    HttpResponse,
+    Validation,
+    ForgotPassword
+} from './forgot-password-controller-protocols'
 import {
     badRequest,
-    EmailInUseError,
-    MissingParamError,
     notDataExists,
     ok,
     serverError
 } from '../account-enable/account-active-controller-protocols'
-import { Validation } from '../signup/signup-controller-protocols'
+import { HashRandomGenerate, SendEmail } from '../../protocols'
 
 export class ForgotPasswordController implements Controller {
     constructor(
         private readonly validations: Validation,
-        private readonly forgotPassword: ForgotPassword
+        private readonly forgotPassword: ForgotPassword,
+        private readonly tokenResetToken: HashRandomGenerate,
+        private readonly tokenResetExpired: number,
+        private readonly sendEmail: SendEmail
     ) {}
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -22,12 +28,25 @@ export class ForgotPasswordController implements Controller {
             if (error) {
                 return badRequest(error)
             }
-            const resetPassword = await this.forgotPassword.email(
-                httpRequest.body
-            )
+            const { email } = httpRequest.body
+            const tokenResetPassword = this.tokenResetToken.generateHash()
+
+            const resetPassword = await this.forgotPassword.request({
+                email,
+                tokenResetPassword,
+                tokenResetExpired: this.tokenResetExpired
+            })
             if (!resetPassword) {
                 return notDataExists('Usuário')
             }
+
+            this.sendEmail.sendEmail({
+                to: email,
+                subject: 'Hora de recuperar sua senha',
+                template: 'confirm_email',
+                context: { token: tokenResetPassword }
+            })
+
             return ok({ success: 'Quase lá, dê uma checada em seu e-mail' })
         } catch (error) {
             return serverError(error)
