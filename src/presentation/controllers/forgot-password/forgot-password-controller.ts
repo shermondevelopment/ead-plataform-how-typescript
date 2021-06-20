@@ -43,7 +43,7 @@ export class ForgotPasswordController implements Controller {
             this.sendEmail.sendEmail({
                 to: email,
                 subject: 'Hora de recuperar sua senha',
-                template: 'confirm_email',
+                template: 'reset_password',
                 context: { token: tokenResetPassword }
             })
 

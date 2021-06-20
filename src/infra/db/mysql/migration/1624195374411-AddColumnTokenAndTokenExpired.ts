@@ -15,7 +15,7 @@ export class AddColumnTokenAndTokenExpired1624195374411
             'accounts',
             new TableColumn({
                 name: 'tokenResetExpired',
-                type: 'date',
+                type: 'datetime',
                 isNullable: true
             })
         )

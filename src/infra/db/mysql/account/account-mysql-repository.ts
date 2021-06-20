@@ -13,6 +13,10 @@ import {
     EnabledAccountRepository,
     TokenRepository
 } from '../../../../data/protocols/db/account/enable-account-repository'
+import {
+    ForgotPasswordRepository,
+    ForgotPasswordRequestRepository
+} from '../../../../data/protocols/db/account/forgot-password-repository'
 
 export class AccountMongoRepository
     implements
@@ -20,7 +24,8 @@ export class AccountMongoRepository
         LoadAccountByEmailRepository,
         UpdateAccessTokenRepository,
         LoadAccountByTokenRepository,
-        EnabledAccountRepository {
+        EnabledAccountRepository,
+        ForgotPasswordRepository {
     private accountRepository: Repository<Accounts>
 
     constructor() {
@@ -66,6 +71,24 @@ export class AccountMongoRepository
         }
         findToken.status = true
         await this.accountRepository.save(findToken)
+        return true
+    }
+    async request(data: ForgotPasswordRequestRepository): Promise<boolean> {
+        const { tokenResetPassword, tokenResetExpired, email } = data
+        const account = await this.accountRepository.findOne({
+            email
+        })
+        if (!account) {
+            return false
+        }
+
+        await this.accountRepository.update(
+            { id: account.id },
+            {
+                tokenResetPassword,
+                tokenResetExpired: new Date(tokenResetExpired)
+            }
+        )
         return true
     }
 }

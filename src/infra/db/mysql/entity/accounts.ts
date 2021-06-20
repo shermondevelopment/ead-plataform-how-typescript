@@ -33,6 +33,12 @@ export default class Accounts {
     @Column({ select: false })
     token_account: string
 
+    @Column({ select: false })
+    tokenResetPassword: string
+
+    @Column({ select: false })
+    tokenResetExpired: Date
+
     @BeforeInsert()
     addDate(): void {
         const date = new Date()
