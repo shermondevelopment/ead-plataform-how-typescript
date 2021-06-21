@@ -36,7 +36,7 @@ export default class Accounts {
     @Column({ select: false })
     tokenResetPassword: string
 
-    @Column({ select: false })
+    @Column()
     tokenResetExpired: Date
 
     @BeforeInsert()

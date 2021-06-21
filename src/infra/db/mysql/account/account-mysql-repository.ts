@@ -17,6 +17,10 @@ import {
     ForgotPasswordRepository,
     ForgotPasswordRequestRepository
 } from '../../../../data/protocols/db/account/forgot-password-repository'
+import {
+    ResetPasswordRepository,
+    ResetPasswordParamsRepository
+} from '../../../../data/protocols/db/account/reset-password-repository'
 
 export class AccountMongoRepository
     implements
@@ -25,7 +29,8 @@ export class AccountMongoRepository
         UpdateAccessTokenRepository,
         LoadAccountByTokenRepository,
         EnabledAccountRepository,
-        ForgotPasswordRepository {
+        ForgotPasswordRepository,
+        ResetPasswordRepository {
     private accountRepository: Repository<Accounts>
 
     constructor() {
@@ -89,6 +94,22 @@ export class AccountMongoRepository
                 tokenResetExpired: new Date(tokenResetExpired)
             }
         )
+        return true
+    }
+    async reset(params: ResetPasswordParamsRepository): Promise<boolean> {
+        const hashToken = await this.accountRepository.findOne({
+            tokenResetPassword: params.token
+        })
+        const dataActually = new Date()
+        if (
+            hashToken === undefined ||
+            dataActually > hashToken.tokenResetExpired
+        ) {
+            return false
+        }
+        hashToken.password = params.password
+        hashToken.tokenResetPassword = ''
+        await this.accountRepository.save(hashToken)
         return true
     }
 }

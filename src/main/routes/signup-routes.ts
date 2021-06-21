@@ -13,6 +13,7 @@ import { makeDeleteCourseController } from '../factories/controllers/course/dele
 import { makeUpdateController } from '../factories/controllers/course/update/course-controller-factory'
 import { makeEnableAccountController } from '../factories/controllers/enable-account/enable-account-controller-factory'
 import { makeForgotPassword } from '../factories/controllers/forgot-password/forgot-password-factory'
+import { makeResetPassword } from '../factories/controllers/reset-password/reset-password-factory'
 
 export default (router: Router): void => {
     const adminAuth = adaptMiddleware(makeAuthMiddleware('admin'))
@@ -27,6 +28,7 @@ export default (router: Router): void => {
     )
     router.get('/enable-account', adaptRoute(makeEnableAccountController()))
     router.post('/forgot-password', adaptRoute(makeForgotPassword()))
+    router.post('/reset', adaptRoute(makeResetPassword()))
     router.get('/course', userAuth, adaptRoute(makeLoadCourseController()))
     router.delete(
         '/course/delete/:id',

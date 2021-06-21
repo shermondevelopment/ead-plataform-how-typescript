@@ -10,7 +10,7 @@ import { ForgotPasswordController } from '../../../../presentation/controllers/f
 
 export const makeForgotPassword = (): Controller => {
     const data = new Date()
-    const newData = data.setDate(data.getHours() + 48)
+    const newData = data.setHours(data.getHours() + 48)
     const controller = new ForgotPasswordController(
         makeForgotPasswordValidation(),
         new DbForgotPassword(new AccountMongoRepository()),

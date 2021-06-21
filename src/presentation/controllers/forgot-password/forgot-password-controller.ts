@@ -37,7 +37,7 @@ export class ForgotPasswordController implements Controller {
                 tokenResetExpired: this.tokenResetExpired
             })
             if (!resetPassword) {
-                return notDataExists('Usuário')
+                return notDataExists('Usuário não encontrado')
             }
 
             this.sendEmail.sendEmail({

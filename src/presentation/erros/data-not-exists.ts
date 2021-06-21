@@ -1,6 +1,6 @@
 export class DataNotExists extends Error {
     constructor(message: string) {
-        super(`${message} não encontrado`)
+        super(`${message}`)
         this.name = 'DataNotExists'
     }
 }

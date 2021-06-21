@@ -131,7 +131,7 @@ describe('ForgotPassword', () => {
             new Promise((resolved) => resolved(false))
         )
         const httpResponse = await sut.handle(makeFakeRequest())
-        expect(httpResponse).toEqual(notDataExists('Usuário'))
+        expect(httpResponse).toEqual(notDataExists('Usuário não encontrado'))
     })
     test('Should return 500 if ForgotPassword throws', async () => {
         const { sut, forgotPassword } = makeSut()
