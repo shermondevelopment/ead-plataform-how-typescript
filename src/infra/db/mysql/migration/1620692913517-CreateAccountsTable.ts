@@ -24,6 +24,12 @@ export class CreateAccountsTable1620692913517 implements MigrationInterface {
                         isUnique: true
                     },
                     {
+                        name: 'profile',
+                        type: 'varchar',
+                        isNullable: false,
+                        default: "'default.svg'"
+                    },
+                    {
                         name: 'password',
                         type: 'varchar',
                         isNullable: false

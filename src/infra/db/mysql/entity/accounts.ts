@@ -1,5 +1,13 @@
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
-import crypt from 'crypto'
+import {
+    BeforeInsert,
+    Column,
+    Entity,
+    PrimaryGeneratedColumn,
+    BeforeUpdate
+} from 'typeorm'
+import aws from 'aws-sdk'
+
+const s3 = new aws.S3()
 
 @Entity('accounts')
 export default class Accounts {
@@ -14,6 +22,9 @@ export default class Accounts {
 
     @Column()
     password: string
+
+    @Column()
+    profile: string
 
     @Column()
     sexo: string
@@ -44,5 +55,16 @@ export default class Accounts {
         const date = new Date()
         date.setDate(date.getHours() + 48)
         this.view_free_time = date
+    }
+    @BeforeUpdate()
+    async removeObject(): Promise<void> {
+        if (this.profile !== this.profile) {
+            await s3
+                .deleteObject({
+                    Bucket: 'brainly-figure-course',
+                    Key: this.profile
+                })
+                .promise()
+        }
     }
 }

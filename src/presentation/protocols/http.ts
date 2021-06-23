@@ -3,6 +3,7 @@ export interface HttpRequest {
     query?: any
     params?: any
     headers?: any
+    accountId?: any
 }
 
 export interface HttpResponse {

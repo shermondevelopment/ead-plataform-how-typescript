@@ -21,6 +21,10 @@ import {
     ResetPasswordRepository,
     ResetPasswordParamsRepository
 } from '../../../../data/protocols/db/account/reset-password-repository'
+import {
+    UpdateProfileRepository,
+    UpdatyeProfileParamsRepository
+} from '../../../../data/protocols/db/account/update-profile-repository'
 
 export class AccountMongoRepository
     implements
@@ -30,7 +34,8 @@ export class AccountMongoRepository
         LoadAccountByTokenRepository,
         EnabledAccountRepository,
         ForgotPasswordRepository,
-        ResetPasswordRepository {
+        ResetPasswordRepository,
+        UpdateProfileRepository {
     private accountRepository: Repository<Accounts>
 
     constructor() {
@@ -111,5 +116,11 @@ export class AccountMongoRepository
         hashToken.tokenResetPassword = ''
         await this.accountRepository.save(hashToken)
         return true
+    }
+    async setProfile(params: UpdatyeProfileParamsRepository): Promise<string> {
+        const account = await this.accountRepository.findOne({ id: params.id })
+        account.profile = params.profile
+        await this.accountRepository.save(account)
+        return params.profile
     }
 }

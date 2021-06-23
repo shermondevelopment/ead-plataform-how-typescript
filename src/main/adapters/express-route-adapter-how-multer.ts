@@ -4,10 +4,12 @@ import { Response, Request } from 'express'
 interface MulterRequest extends Request {
     file: any
 }
+
 export const adaptRouteMulter = (controller: Controller) => {
     return async (req: MulterRequest, res: Response) => {
         const httpRequest: HttpRequest = {
-            body: { ...req.body, figure: req.file.key }
+            body: { ...req.body, figure: req.file.key },
+            accountId: req.accountId
         }
         const httpResponse = await controller.handle(httpRequest)
         if (httpResponse.statusCode === 200) {
