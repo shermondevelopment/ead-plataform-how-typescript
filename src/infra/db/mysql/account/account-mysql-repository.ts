@@ -25,6 +25,8 @@ import {
     UpdateProfileRepository,
     UpdatyeProfileParamsRepository
 } from '../../../../data/protocols/db/account/update-profile-repository'
+import { UpdateAccountRepository } from '../../../../data/protocols/db/account/update-account-repository'
+import { UpdateAccountModel } from '../../../../domain/models/update-account-model'
 
 export class AccountMongoRepository
     implements
@@ -35,7 +37,8 @@ export class AccountMongoRepository
         EnabledAccountRepository,
         ForgotPasswordRepository,
         ResetPasswordRepository,
-        UpdateProfileRepository {
+        UpdateProfileRepository,
+        UpdateAccountRepository {
     private accountRepository: Repository<Accounts>
 
     constructor() {
@@ -122,5 +125,14 @@ export class AccountMongoRepository
         account.profile = params.profile
         await this.accountRepository.save(account)
         return params.profile
+    }
+    async updateAccount(
+        id: string,
+        params: UpdateAccountModel
+    ): Promise<Partial<UpdateAccountModel>> {
+        const account = await this.accountRepository.findOne({ id })
+        Object.assign(account, params)
+        await this.accountRepository.save(account)
+        return params
     }
 }

@@ -1,6 +1,6 @@
-import { UpdateAccountModel } from '../../models/update-account-model'
+import { UpdateAccountModel } from '../../../../domain/models/update-account-model'
 
-export interface UpdateAccount {
+export interface UpdateAccountRepository {
     updateAccount(
         id: string,
         paramsAccount: UpdateAccountModel

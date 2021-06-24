@@ -15,6 +15,7 @@ import { makeEnableAccountController } from '../factories/controllers/enable-acc
 import { makeForgotPassword } from '../factories/controllers/forgot-password/forgot-password-factory'
 import { makeResetPassword } from '../factories/controllers/reset-password/reset-password-factory'
 import { makeUpdateProfile } from '../factories/controllers/update-profile/reset-password-factory'
+import { makeUpdateAccountController } from '../factories/controllers/update-account/update-account-factory'
 
 export default (router: Router): void => {
     const adminAuth = adaptMiddleware(makeAuthMiddleware('admin'))
@@ -30,6 +31,7 @@ export default (router: Router): void => {
     router.get('/enable-account', adaptRoute(makeEnableAccountController()))
     router.post('/forgot-password', adaptRoute(makeForgotPassword()))
     router.post('/reset', adaptRoute(makeResetPassword()))
+    router.patch('/user', userAuth, adaptRoute(makeUpdateAccountController()))
     router.post(
         '/profile',
         userAuth,
