@@ -30,6 +30,27 @@ export default class Accounts {
     sexo: string
 
     @Column()
+    zipcode?: string
+
+    @Column()
+    state?: string
+
+    @Column()
+    city?: string
+
+    @Column()
+    district?: string
+
+    @Column()
+    address?: string
+
+    @Column()
+    number?: number
+
+    @Column()
+    phone?: string
+
+    @Column()
     token: string
 
     @Column({ select: false })

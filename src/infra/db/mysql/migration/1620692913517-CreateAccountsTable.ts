@@ -41,6 +41,42 @@ export class CreateAccountsTable1620692913517 implements MigrationInterface {
                         isNullable: false
                     },
                     {
+                        name: 'zipcode',
+                        type: 'varchar',
+                        isNullable: true
+                    },
+                    {
+                        name: 'state',
+                        type: 'varchar',
+                        isNullable: true
+                    },
+                    {
+                        name: 'city',
+                        type: 'varchar',
+                        isNullable: true
+                    },
+                    {
+                        name: 'district',
+                        type: 'varchar',
+                        isNullable: true
+                    },
+
+                    {
+                        name: 'address',
+                        type: 'varchar',
+                        isNullable: true
+                    },
+                    {
+                        name: 'number',
+                        type: 'integer',
+                        isNullable: true
+                    },
+                    {
+                        name: 'phone',
+                        type: 'varchar',
+                        isNullable: true
+                    },
+                    {
                         name: 'token',
                         type: 'text',
                         isNullable: true
