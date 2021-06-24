@@ -124,6 +124,7 @@ export class AccountMongoRepository
         const account = await this.accountRepository.findOne({ id: params.id })
         account.profile = params.profile
         await this.accountRepository.save(account)
+
         return params.profile
     }
     async updateAccount(

@@ -3,7 +3,7 @@ import {
     Column,
     Entity,
     PrimaryGeneratedColumn,
-    BeforeUpdate
+    AfterUpdate
 } from 'typeorm'
 import aws from 'aws-sdk'
 
@@ -76,16 +76,5 @@ export default class Accounts {
         const date = new Date()
         date.setDate(date.getHours() + 48)
         this.view_free_time = date
-    }
-    @BeforeUpdate()
-    async removeObject(): Promise<void> {
-        if (this.profile !== this.profile) {
-            await s3
-                .deleteObject({
-                    Bucket: 'brainly-figure-course',
-                    Key: this.profile
-                })
-                .promise()
-        }
     }
 }
