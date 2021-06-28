@@ -2,7 +2,7 @@ import { AddAccountRepository } from '../../../../data/protocols/db/account/add-
 import {
     AccountModel,
     AddAccountModel
-} from '../../../../presentation/controllers/signup/signup-controller-protocols'
+} from '../../../../presentation/controllers/account/signup/signup-controller-protocols'
 import { MysqlHelper } from '../helpers/mysql-helper'
 import Accounts from '../entity/accounts'
 import { LoadAccountByEmailRepository } from '../../../../data/protocols/db/account/load-account-by-email-repository'
@@ -27,6 +27,9 @@ import {
 } from '../../../../data/protocols/db/account/update-profile-repository'
 import { UpdateAccountRepository } from '../../../../data/protocols/db/account/update-account-repository'
 import { UpdateAccountModel } from '../../../../domain/models/update-account-model'
+import { LoadAccountByIdRepository } from '../../../../data/protocols/db/account/load-account-by-id-repository'
+import { UpdatePasswordRepository } from '../../../../data/protocols/db/account/update-password-repository'
+import { UpdatePasswordParams } from '../../../../domain/usecases/account/update-password/update-password'
 
 export class AccountMongoRepository
     implements
@@ -38,7 +41,9 @@ export class AccountMongoRepository
         ForgotPasswordRepository,
         ResetPasswordRepository,
         UpdateProfileRepository,
-        UpdateAccountRepository {
+        UpdateAccountRepository,
+        LoadAccountByIdRepository,
+        UpdatePasswordRepository {
     private accountRepository: Repository<Accounts>
 
     constructor() {
@@ -135,5 +140,15 @@ export class AccountMongoRepository
         Object.assign(account, params)
         await this.accountRepository.save(account)
         return params
+    }
+    async loadById(id: string): Promise<AccountModel> {
+        const account = await this.accountRepository.findOne({ id })
+        return account
+    }
+    async updatePassword(params: UpdatePasswordParams): Promise<boolean> {
+        const account = await this.accountRepository.findOne({ id: params.id })
+        account.password = params.password
+        await this.accountRepository.save(account)
+        return true
     }
 }

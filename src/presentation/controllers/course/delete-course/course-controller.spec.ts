@@ -1,5 +1,4 @@
-import { MissingParamError } from '../../../erros'
-import { badRequest, serverError, ok } from '../../../helpers/http/http-helper'
+import { serverError, ok } from '../../../helpers/http/http-helper'
 import { DeleteCourseController } from './course-controller'
 import { HttpRequest, Delete } from './course-controller-protocols'
 

@@ -4,9 +4,9 @@ import { makeLogControllerDecorator } from '../../decorators/log-controller-deco
 import mailer from '../../../lib/mail-settings'
 import { EmailSendAdapter } from '../../../../presentation/utils/email-send-adapter'
 import { HashGenerateAdapter } from '../../../../presentation/utils/hash-generate-adapter'
-import { DbForgotPassword } from '../../../../data/usecases/account-forgot/db-account-forgot-password'
+import { DbForgotPassword } from '../../../../data/usecases/account/account-forgot/db-account-forgot-password'
 import { AccountMongoRepository } from '../../../../infra/db/mysql/account/account-mysql-repository'
-import { ForgotPasswordController } from '../../../../presentation/controllers/forgot-password/forgot-password-controller'
+import { ForgotPasswordController } from '../../../../presentation/controllers/account/forgot-password/forgot-password-controller'
 
 export const makeForgotPassword = (): Controller => {
     const data = new Date()

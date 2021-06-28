@@ -5,11 +5,11 @@ import { DeleteRepository } from '../../../../data/protocols/db/course/db-delete
 import { UpdateCourseRepository } from '../../../../data/protocols/db/course/db-update-course-repository'
 import { Like } from 'typeorm'
 import { CourseModel } from '../../../../domain/models/course-model'
-import { AddCourseModel } from '../../../../domain/usecases/add-course/add-course'
+import { AddCourseModel } from '../../../../domain/usecases/course/add-course/add-course'
 import {
     CourseArray,
     ParamCourses
-} from '../../../../domain/usecases/load-courses/load-course'
+} from '../../../../domain/usecases/course/load-courses/load-course'
 import Course from '../entity/courses'
 import { MysqlHelper } from '../helpers/mysql-helper'
 

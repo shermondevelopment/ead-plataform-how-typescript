@@ -1,5 +1,0 @@
-export * from '../../protocols'
-export * from '../../protocols/validation'
-export * from '../../../domain/usecases/add-account/add-account'
-export * from '../../../domain/models/account-model'
-export * from '../../../domain/usecases/authentication/authentication'

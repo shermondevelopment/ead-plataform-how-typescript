@@ -1,14 +1,4 @@
-import {
-    BeforeInsert,
-    Column,
-    Entity,
-    PrimaryGeneratedColumn,
-    AfterUpdate
-} from 'typeorm'
-import aws from 'aws-sdk'
-
-const s3 = new aws.S3()
-
+import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 @Entity('accounts')
 export default class Accounts {
     @PrimaryGeneratedColumn('uuid')

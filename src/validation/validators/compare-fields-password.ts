@@ -1,4 +1,4 @@
-import { InvalidParamError, InvalidPassword } from '../../presentation/erros'
+import { InvalidPassword } from '../../presentation/erros'
 import { Validation } from '../../presentation/protocols/validation'
 
 export class CompareFieldsValidation implements Validation {
@@ -11,6 +11,5 @@ export class CompareFieldsValidation implements Validation {
         if (input[this.fieldName] !== input[this.fieldToCompareName]) {
             return new InvalidPassword()
         }
-        InvalidParamError
     }
 }

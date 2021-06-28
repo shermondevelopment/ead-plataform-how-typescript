@@ -1,3 +1,9 @@
+export interface EncrypterParams {
+    id: string
+    name: string
+    profile: string
+}
+
 export interface Encrypter {
-    encrypt(value: string): Promise<string>
+    encrypt(value: EncrypterParams): Promise<string>
 }

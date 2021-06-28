@@ -2,10 +2,10 @@ import { CourseModel } from '../../../../domain/models/course-model'
 import {
     AddCourse,
     AddCourseModel
-} from '../../../../domain/usecases/add-course/add-course'
+} from '../../../../domain/usecases/course/add-course/add-course'
 import { MissingParamError } from '../../../erros'
 import { badRequest, ok, serverError } from '../../../helpers/http/http-helper'
-import { Validation } from '../../signup/signup-controller-protocols'
+import { Validation } from '../../account/signup/signup-controller-protocols'
 import { AddCourseController } from './course-controller'
 
 interface SutTypes {
