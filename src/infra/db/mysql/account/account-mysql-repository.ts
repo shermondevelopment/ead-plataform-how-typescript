@@ -26,7 +26,7 @@ import {
     UpdatyeProfileParamsRepository
 } from '../../../../data/protocols/db/account/update-profile-repository'
 import { UpdateAccountRepository } from '../../../../data/protocols/db/account/update-account-repository'
-import { UpdateAccountModel } from '../../../../domain/models/update-account-model'
+import { UpdateAccountModel } from '../../../../domain/models/account/update-account-model'
 import { LoadAccountByIdRepository } from '../../../../data/protocols/db/account/load-account-by-id-repository'
 import { UpdatePasswordRepository } from '../../../../data/protocols/db/account/update-password-repository'
 import { UpdatePasswordParams } from '../../../../domain/usecases/account/update-password/update-password'

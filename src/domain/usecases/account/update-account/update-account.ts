@@ -1,4 +1,4 @@
-import { UpdateAccountModel } from '../../../models/update-account-model'
+import { UpdateAccountModel } from '../../../models/account/update-account-model'
 
 export interface UpdateAccount {
     updateAccount(

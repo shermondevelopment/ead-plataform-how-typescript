@@ -1,5 +1,5 @@
 import { LogErrorRepository } from '../../data/protocols/db/log/log-error-repository'
-import { AccountModel } from '../../domain/models/account-model'
+import { AccountModel } from '../../domain/models/account/account-model'
 import { serverError, ok } from '../../presentation/helpers/http/http-helper'
 import {
     Controller,

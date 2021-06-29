@@ -1,4 +1,4 @@
-import { CourseModel } from '../../../../domain/models/course-model'
+import { CourseModel } from '../../../../domain/models/course/course-model'
 import {
     AddCourse,
     AddCourseModel

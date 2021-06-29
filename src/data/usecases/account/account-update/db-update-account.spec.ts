@@ -1,4 +1,4 @@
-import { UpdateAccountModel } from '../../../../domain/models/update-account-model'
+import { UpdateAccountModel } from '../../../../domain/models/account/update-account-model'
 import { UpdateAccountRepository } from '../../../protocols/db/account/update-account-repository'
 import { DbAccountUpdate } from './db-update-account'
 

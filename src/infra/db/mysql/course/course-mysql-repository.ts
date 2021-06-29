@@ -4,7 +4,7 @@ import { LoadCourseRepository } from '../../../../data/protocols/db/course/db-lo
 import { DeleteRepository } from '../../../../data/protocols/db/course/db-delete-course-repository'
 import { UpdateCourseRepository } from '../../../../data/protocols/db/course/db-update-course-repository'
 import { Like } from 'typeorm'
-import { CourseModel } from '../../../../domain/models/course-model'
+import { CourseModel } from '../../../../domain/models/course/course-model'
 import { AddCourseModel } from '../../../../domain/usecases/course/add-course/add-course'
 import {
     CourseArray,
