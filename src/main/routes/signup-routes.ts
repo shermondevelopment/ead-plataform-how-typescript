@@ -18,6 +18,7 @@ import { makeUpdateProfile } from '../factories/controllers/update-profile/reset
 import { makeUpdateAccountController } from '../factories/controllers/update-account/update-account-factory'
 import { makeUpdatePasswordController } from '../factories/controllers/account-update-password/account-update-password'
 import { makeAddDisciplineController } from '../factories/controllers/discipline/add/discipline-controller-factory'
+import { makeLoadDisciplineController } from '../factories/controllers/discipline/load/discipline-controller-factory'
 
 export default (router: Router): void => {
     const adminAuth = adaptMiddleware(makeAuthMiddleware('admin'))
@@ -60,5 +61,10 @@ export default (router: Router): void => {
         '/discipline',
         adminAuth,
         adaptRoute(makeAddDisciplineController())
+    )
+    router.get(
+        '/discipline',
+        adminAuth,
+        adaptRoute(makeLoadDisciplineController())
     )
 }

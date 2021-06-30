@@ -4,18 +4,20 @@ import {
     ok,
     serverError
 } from '../add-discipline/add-discipline-controller-protocols'
-import { DbLoadDisciplineController } from './load-discipline-controller'
+import { LoadDisciplineController } from './load-discipline-controller'
 
 interface SutTypes {
-    sut: DbLoadDisciplineController
+    sut: LoadDisciplineController
     loadDisciplineStub: LoadDiscipline
 }
 
-const makeFakeResponse = () => ({
-    id: 'any_id',
-    title: 'any title',
-    slug: 'any-slug'
-})
+const makeFakeResponse = () => [
+    {
+        id: 'any_id',
+        title: 'any title',
+        slug: 'any-slug'
+    }
+]
 
 const makeFakeRequest = () => ({
     query: {}
@@ -23,7 +25,7 @@ const makeFakeRequest = () => ({
 
 const makeLoadDiscipline = (): LoadDiscipline => {
     class LoadDisciplineStub implements LoadDiscipline {
-        async load(): Promise<DisciplineModel> {
+        async load(): Promise<Array<DisciplineModel>> {
             return new Promise((resolved) => resolved(makeFakeResponse()))
         }
     }
@@ -32,7 +34,7 @@ const makeLoadDiscipline = (): LoadDiscipline => {
 
 const makeSut = (): SutTypes => {
     const loadDisciplineStub = makeLoadDiscipline()
-    const sut = new DbLoadDisciplineController(loadDisciplineStub)
+    const sut = new LoadDisciplineController(loadDisciplineStub)
     return {
         sut,
         loadDisciplineStub

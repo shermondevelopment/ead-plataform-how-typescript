@@ -5,7 +5,7 @@ import {
     serverError
 } from '../add-discipline/add-discipline-controller-protocols'
 
-export class DbLoadDisciplineController implements Controller {
+export class LoadDisciplineController implements Controller {
     constructor(private readonly loadDiscipline: LoadDiscipline) {}
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {

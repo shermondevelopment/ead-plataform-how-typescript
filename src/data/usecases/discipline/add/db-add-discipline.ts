@@ -3,7 +3,7 @@ import {
     AddDiscipline,
     AddDisciplineModel
 } from '../../../../domain/usecases/discipline/add/add-discipline'
-import { AddDisciplineRepository } from '../../../protocols/db/discipline/add/add-discpline'
+import { AddDisciplineRepository } from '../../../protocols/db/discipline/add-discpline'
 import { Slug } from '../../course/add-course/db-add-course-protocols'
 
 export class DbAddDiscipline implements AddDiscipline {

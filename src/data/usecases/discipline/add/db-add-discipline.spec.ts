@@ -1,6 +1,9 @@
-import { DisciplineModel } from '../../../../domain/models/discipline/add-discipline'
-import { AddDisciplineRepository } from '../../../protocols/db/discipline/add/add-discpline'
-import { Slug } from '../../course/add-course/db-add-course-protocols'
+import {
+    DisciplineModel,
+    AddDisciplineRepository,
+    AddDisciplineModel,
+    Slug
+} from './db-add-discipline-protocols'
 import { DbAddDiscipline } from './db-add-discipline'
 
 export interface SutTypes {
@@ -10,12 +13,14 @@ export interface SutTypes {
 }
 
 const makeFakeResponse = (): DisciplineModel => ({
+    id: 'any_id',
     title: 'any title',
     slug: 'any-title'
 })
 
-const makeFakeRequest = () => ({
-    title: 'any title'
+const makeFakeRequest = (): AddDisciplineModel => ({
+    title: 'any title',
+    slug: 'any-title'
 })
 
 const makeSlugStub = (): Slug => {
@@ -29,7 +34,7 @@ const makeSlugStub = (): Slug => {
 
 const makeAddRepositoryRepository = (): AddDisciplineRepository => {
     class AddDisciplineRepositoryStub implements AddDisciplineRepository {
-        async add(params: DisciplineModel): Promise<DisciplineModel> {
+        async add(params: AddDisciplineModel): Promise<DisciplineModel> {
             return new Promise((resolved) => resolved(makeFakeResponse()))
         }
     }
@@ -69,7 +74,7 @@ describe('DbAddDiscipline', async () => {
             'add'
         )
         await sut.add(makeFakeRequest())
-        expect(spyDisciplineRepository).toHaveBeenCalledWith(makeFakeResponse())
+        expect(spyDisciplineRepository).toHaveBeenCalledWith(makeFakeRequest())
     })
     test('Should throw if addDisciplineRepository return throws', async () => {
         const { sut, addDisciplineRepositoryStub } = makeSut()
