@@ -20,8 +20,6 @@ const makeFakeRequest = () => ({
     }
 })
 
-const makeFakeResponse = 1
-
 const makeFakeUpdateStub = (): UpdateCourse => {
     class UpdateStub implements UpdateCourse {
         async update(

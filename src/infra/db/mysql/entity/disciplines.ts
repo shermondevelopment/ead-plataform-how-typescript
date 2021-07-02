@@ -1,11 +1,4 @@
-import {
-    Column,
-    Entity,
-    JoinTable,
-    ManyToMany,
-    PrimaryGeneratedColumn
-} from 'typeorm'
-import Course from './courses'
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity('disciplines')
 export default class Discipline {
@@ -17,13 +10,4 @@ export default class Discipline {
 
     @Column()
     slug: string
-
-    @ManyToMany(() => Course)
-    @JoinTable({
-        name: 'courses_disciplines',
-        joinColumn: {
-            name: 'discipline_id'
-        }
-    })
-    courses: Course[]
 }
