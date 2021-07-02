@@ -1,0 +1,5 @@
+export * from '../../../protocols/db/course/db-update-course-repository'
+export * from '../../../protocols/remodulate/slug'
+export * from '../add/db-add-discipline-protocols'
+export * from '../../../protocols/db/discipline/update-discipline'
+export * from '../../../../domain/usecases/discipline/update/update-discipline'
