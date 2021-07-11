@@ -1,9 +1,9 @@
 import {} from '../../../protocols/db/discipline/update-discipline'
 import {
-    AddDisciplineModel,
     Slug,
     UpdateDisciplineRepository,
-    UpdateDiscipline
+    UpdateDiscipline,
+    PartialUpdatedDiscipline
 } from './db-update-discipline-protocols'
 
 export class DbUpdateDiscipline implements UpdateDiscipline {
@@ -14,7 +14,7 @@ export class DbUpdateDiscipline implements UpdateDiscipline {
 
     async update(
         id: string,
-        disciplineModel: AddDisciplineModel
+        disciplineModel: PartialUpdatedDiscipline
     ): Promise<number> {
         const update = await this.updateDisciplineRepository.update(id, {
             ...disciplineModel,
