@@ -19,8 +19,11 @@ export class AddDisciplineController implements Controller {
             if (error) {
                 return badRequest(error)
             }
+            const { title, courseId, qt_modules } = httpRequest.body
             const discipline = await this.addDiscipline.add({
-                title: httpRequest.body.title
+                title,
+                qt_modules,
+                courseId
             })
             return ok(discipline)
         } catch (error) {

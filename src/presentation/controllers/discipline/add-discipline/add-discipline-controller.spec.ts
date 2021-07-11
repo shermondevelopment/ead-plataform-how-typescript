@@ -18,8 +18,18 @@ export interface SutTypes {
 
 const makeFakeRequest = () => ({
     body: {
-        title: 'any_title'
+        title: 'any_title',
+        qt_modules: 10,
+        courseId: 'any_id'
     }
+})
+
+const makeFakeResponse = () => ({
+    id: 'any_id',
+    title: 'any_title',
+    qt_modules: 10,
+    slug: 'any_slug',
+    courseId: 'any_id'
 })
 
 const makeValidation = (): Validation => {
@@ -34,9 +44,7 @@ const makeValidation = (): Validation => {
 const makeAddDiscipline = (): AddDiscipline => {
     class AddDisciplineStub implements AddDiscipline {
         async add(params: AddDisciplineModel): Promise<DisciplineModel> {
-            return new Promise((resolved) =>
-                resolved({ title: 'any_title', slug: 'any_slug' })
-            )
+            return new Promise((resolved) => resolved(makeFakeResponse()))
         }
     }
     return new AddDisciplineStub()
@@ -75,7 +83,11 @@ describe('Add Discipline Controller', () => {
         const { sut, addDisciplineStub } = makeSut()
         const spyAddDiscipline = jest.spyOn(addDisciplineStub, 'add')
         await sut.handle(makeFakeRequest())
-        expect(spyAddDiscipline).toHaveBeenCalledWith({ title: 'any_title' })
+        expect(spyAddDiscipline).toHaveBeenCalledWith({
+            title: 'any_title',
+            qt_modules: 10,
+            courseId: 'any_id'
+        })
     })
     test('Should return 500 if AddDiscipline throws', async () => {
         const { sut, addDisciplineStub } = makeSut()
@@ -88,8 +100,6 @@ describe('Add Discipline Controller', () => {
     test('Should return 200 if AddDiscipline return success', async () => {
         const { sut } = makeSut()
         const httpResponse = await sut.handle(makeFakeRequest())
-        expect(httpResponse).toEqual(
-            ok({ title: 'any_title', slug: 'any_slug' })
-        )
+        expect(httpResponse).toEqual(ok(makeFakeResponse()))
     })
 })

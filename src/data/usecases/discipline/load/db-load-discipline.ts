@@ -9,8 +9,8 @@ export class DbLoadDiscipline implements LoadDiscipline {
         private readonly loadDisciplineRepository: LoadDisciplineRepository
     ) {}
 
-    async load(): Promise<Array<DisciplineModel>> {
-        const discipline = await this.loadDisciplineRepository.load()
+    async load(id: string): Promise<Array<DisciplineModel>> {
+        const discipline = await this.loadDisciplineRepository.load(id)
         return discipline
     }
 }

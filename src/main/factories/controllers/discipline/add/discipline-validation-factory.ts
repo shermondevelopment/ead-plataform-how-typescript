@@ -6,7 +6,7 @@ import { Validation } from '../../../../../presentation/protocols/validation'
 
 export const makeAddDisciplineValidation = (): ValidationComposite => {
     const validations: Validation[] = []
-    for (const field of ['title']) {
+    for (const field of ['title', 'courseId']) {
         validations.push(new RequiredFieldValidation(field))
     }
     return new ValidationComposite(validations)

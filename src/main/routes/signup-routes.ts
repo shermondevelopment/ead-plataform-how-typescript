@@ -66,7 +66,7 @@ export default (router: Router): void => {
     )
     router.get(
         '/discipline',
-        adminAuth,
+        userAuth,
         adaptRoute(makeLoadDisciplineController())
     )
     router.delete(

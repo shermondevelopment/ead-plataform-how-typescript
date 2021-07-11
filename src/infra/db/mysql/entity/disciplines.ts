@@ -10,4 +10,10 @@ export default class Discipline {
 
     @Column()
     slug: string
+
+    @Column()
+    qt_modules: number
+
+    @Column()
+    courseId: string
 }

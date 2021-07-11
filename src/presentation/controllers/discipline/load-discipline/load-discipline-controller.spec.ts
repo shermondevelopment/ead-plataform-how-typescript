@@ -15,7 +15,9 @@ const makeFakeResponse = () => [
     {
         id: 'any_id',
         title: 'any title',
-        slug: 'any-slug'
+        slug: 'any-slug',
+        qt_modules: 13,
+        courseId: 'any_id'
     }
 ]
 

@@ -13,13 +13,15 @@ const makeFakeResponse = () => [
     {
         id: 'any_id',
         title: 'any title',
-        slug: 'any-slug'
+        slug: 'any-slug',
+        qt_modules: 12,
+        courseId: 'any_id'
     }
 ]
 
 const makeLoadDisciplineRepository = (): LoadDisciplineRepository => {
     class LoadDisciplineRepositoryStub implements LoadDisciplineRepository {
-        async load(): Promise<Array<DisciplineModel>> {
+        async load(id: string): Promise<Array<DisciplineModel>> {
             return new Promise((resolved) => resolved(makeFakeResponse()))
         }
     }
@@ -41,12 +43,12 @@ describe('Load Disciplines', () => {
         jest.spyOn(loadDisciplineRepository, 'load').mockReturnValueOnce(
             new Promise((resolve, reject) => reject(new Error()))
         )
-        const discipline = sut.load()
+        const discipline = sut.load('any_id')
         await expect(discipline).rejects.toThrow()
     })
     test('Should return an courses if on success', async () => {
         const { sut } = makeSut()
-        const courses = await sut.load()
+        const courses = await sut.load('any_id')
         expect(courses).toEqual(makeFakeResponse())
     })
 })

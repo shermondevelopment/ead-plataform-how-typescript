@@ -10,7 +10,8 @@ export class LoadDisciplineController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            const discipline = await this.loadDiscipline.load()
+            const { courseId } = httpRequest.query
+            const discipline = await this.loadDiscipline.load(courseId)
             return ok(discipline)
         } catch (error) {
             return serverError(error)

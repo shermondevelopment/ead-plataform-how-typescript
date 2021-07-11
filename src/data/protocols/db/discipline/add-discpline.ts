@@ -3,6 +3,8 @@ import { DisciplineModel } from '../../../../domain/models/discipline/add-discip
 export interface AddDisciplineModel {
     title: string
     slug: string
+    qt_modules: number
+    courseId: string
 }
 
 export interface AddDisciplineRepository {

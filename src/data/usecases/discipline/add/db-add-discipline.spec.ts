@@ -15,12 +15,16 @@ export interface SutTypes {
 const makeFakeResponse = (): DisciplineModel => ({
     id: 'any_id',
     title: 'any title',
-    slug: 'any-title'
+    slug: 'any-title',
+    qt_modules: 10,
+    courseId: 'any_id'
 })
 
 const makeFakeRequest = (): AddDisciplineModel => ({
     title: 'any title',
-    slug: 'any-title'
+    slug: 'any-title',
+    qt_modules: 10,
+    courseId: 'any_id'
 })
 
 const makeSlugStub = (): Slug => {

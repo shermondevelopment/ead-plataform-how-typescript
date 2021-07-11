@@ -1,4 +1,4 @@
-import { CourseModel } from '../../models/course-model'
+import { CourseModel } from '../../../models/course/course-model'
 
 export interface ParamCourses {
     search?: string

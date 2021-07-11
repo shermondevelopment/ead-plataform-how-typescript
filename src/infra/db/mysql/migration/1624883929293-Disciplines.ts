@@ -1,4 +1,9 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm'
+import {
+    MigrationInterface,
+    QueryRunner,
+    Table,
+    TableForeignKey
+} from 'typeorm'
 
 export class Disciplines1624883929293 implements MigrationInterface {
     name = 'Disciplines1624883929293'
@@ -23,13 +28,32 @@ export class Disciplines1624883929293 implements MigrationInterface {
                         name: 'slug',
                         type: 'varchar',
                         isNullable: false
+                    },
+                    {
+                        name: 'qt_modules',
+                        type: 'integer',
+                        isNullable: false
+                    },
+                    {
+                        name: 'courseId',
+                        type: 'varchar',
+                        isNullable: false
                     }
                 ]
+            })
+        )
+        await queryRunner.createForeignKey(
+            'disciplines',
+            new TableForeignKey({
+                columnNames: ['courseId'],
+                referencedTableName: 'courses',
+                referencedColumnNames: ['id']
             })
         )
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.dropForeignKey('disciplines', 'courseId')
         await queryRunner.dropTable('disciplines')
     }
 }

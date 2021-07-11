@@ -16,7 +16,9 @@ export class DbAddDiscipline implements AddDiscipline {
         const slug = this.slug.transform(params.title)
         const discipline = await this.addDisciplineRepository.add({
             title: params.title,
-            slug
+            slug,
+            qt_modules: params.qt_modules,
+            courseId: params.courseId
         })
         return discipline
     }

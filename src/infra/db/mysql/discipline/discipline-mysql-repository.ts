@@ -22,13 +22,15 @@ export class DisciplineMysqlRepository
         this.disciplineRepository = MysqlHelper.getRepository(Discipline)
     }
 
-    async add(params: DisciplineModel): Promise<DisciplineModel> {
+    async add(params: AddDisciplineModel): Promise<DisciplineModel> {
         const discipline = await this.disciplineRepository.save(params)
         return discipline
     }
 
-    async load(): Promise<Array<DisciplineModel>> {
-        const discipline = await this.disciplineRepository.find()
+    async load(id: string): Promise<Array<DisciplineModel>> {
+        const discipline = await this.disciplineRepository.find({
+            courseId: id
+        })
         return discipline
     }
 
