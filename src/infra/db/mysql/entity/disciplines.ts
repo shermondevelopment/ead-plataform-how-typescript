@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import Module from './modules'
 
 @Entity('disciplines')
 export default class Discipline {
@@ -16,4 +17,7 @@ export default class Discipline {
 
     @Column()
     courseId: string
+
+    @OneToMany(() => Module, (module) => module.disciplineId)
+    moduleId: Module[]
 }
