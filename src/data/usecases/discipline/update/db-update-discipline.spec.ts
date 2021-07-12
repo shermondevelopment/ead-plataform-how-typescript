@@ -2,8 +2,7 @@ import {
     Slug,
     UpdateCourseRepository,
     AddDisciplineModel,
-    UpdateDisciplineRepository,
-    PartialUpdatedDiscipline
+    UpdateDisciplineRepository
 } from './db-update-discipline-protocols'
 import { DbUpdateDiscipline } from './db-update-discipline'
 
