@@ -25,5 +25,5 @@ export default class Module {
     @JoinColumn({
         name: 'disciplineId'
     })
-    disciplineId?: string
+    disciplineId: string
 }
