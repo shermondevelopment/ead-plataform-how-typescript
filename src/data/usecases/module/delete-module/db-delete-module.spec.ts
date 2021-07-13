@@ -24,7 +24,7 @@ const makeSut = (): SutTypes => {
     }
 }
 
-describe('DbDeleteDiscipline', () => {
+describe('DbDeleteModule', () => {
     test('Should call DbDeleteRepository how correct values', async () => {
         const { sut, dbDeleteRepositoryStub } = makeSut()
         const spyDelete = jest.spyOn(dbDeleteRepositoryStub, 'delete')

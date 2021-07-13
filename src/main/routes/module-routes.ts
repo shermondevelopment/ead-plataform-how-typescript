@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { adaptMiddleware } from '../adapters/express-middleware-adapter'
 import { adaptRoute } from '../adapters/express-route-adapter'
 import { makeAddModuleController } from '../factories/controllers/module/add/module-controller-factory'
+import { makeDeleteModuleController } from '../factories/controllers/module/delete/module-controller-factory'
 import { makeLoadModuleController } from '../factories/controllers/module/load/discipline-controller-factory'
 import { makeUpdateModuleController } from '../factories/controllers/module/update/update-controller-factory'
 import { makeAuthMiddleware } from '../factories/middlewares/auth-middleware-factory'
@@ -16,5 +17,10 @@ export default (router: Router): void => {
         '/module/:id',
         adminAuth,
         adaptRoute(makeUpdateModuleController())
+    )
+    router.delete(
+        '/module/:id',
+        adminAuth,
+        adaptRoute(makeDeleteModuleController())
     )
 }

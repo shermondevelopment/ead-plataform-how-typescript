@@ -1,4 +1,5 @@
 import { Repository } from 'typeorm'
+import { DeleteRepository } from '../../../../data/protocols/db/course/db-delete-course-repository'
 import {
     AddModuleRepository,
     AddModulesModelRepository
@@ -13,7 +14,8 @@ export class ModuleMysqlRepository
     implements
         AddModuleRepository,
         LoadModuleRepository,
-        UpdateModuleRepository {
+        UpdateModuleRepository,
+        DeleteRepository {
     private readonly moduleRepository: Repository<Module>
 
     constructor() {
@@ -42,5 +44,9 @@ export class ModuleMysqlRepository
             ...updateModule
         })
         return updated.affected
+    }
+    async delete(id: string): Promise<any> {
+        const course = await this.moduleRepository.findOne({ id })
+        await this.moduleRepository.remove(course)
     }
 }
