@@ -16,6 +16,7 @@ const makeFakeRequest = () => ({
     title: 'any_title',
     slug: 'valid-slug',
     order: 2,
+    qt_materials: 0,
     disciplineId: 'any_discipline'
 })
 const makeFakeResponse = () => ({
@@ -23,6 +24,7 @@ const makeFakeResponse = () => ({
     title: 'any_title',
     slug: 'valid_slug',
     order: 2,
+    qt_materials: 0,
     disciplineId: 'any_discipline'
 })
 

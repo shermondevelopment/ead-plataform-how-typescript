@@ -19,10 +19,16 @@ export class AddModulesController implements Controller {
             if (error) {
                 return badRequest(error)
             }
-            const { title, order, disciplineId } = httpRequest.body
+            const {
+                title,
+                order,
+                disciplineId,
+                qt_materials
+            } = httpRequest.body
             const module = await this.addModules.add({
                 title,
                 order,
+                qt_materials,
                 disciplineId
             })
             return ok(module)

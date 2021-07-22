@@ -35,6 +35,11 @@ export class addTableModule1626031112121 implements MigrationInterface {
                         isNullable: false
                     },
                     {
+                        name: 'qt_materials',
+                        type: 'integer',
+                        isNullable: false
+                    },
+                    {
                         name: 'disciplineId',
                         type: 'varchar',
                         isNullable: false
