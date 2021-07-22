@@ -33,6 +33,11 @@ export class AddTableProgress1626549870594 implements MigrationInterface {
                         isNullable: false
                     },
                     {
+                        name: 'disciplineId',
+                        type: 'varchar',
+                        isNullable: false
+                    },
+                    {
                         name: 'moduleId',
                         type: 'varchar',
                         isNullable: false

@@ -13,6 +13,7 @@ const makeFakeRequest = () => ({
     user_id: 'any_id',
     totalItems: 0,
     completedItems: 0,
+    disciplineId: 'any_id',
     moduleId: 'any_id'
 })
 

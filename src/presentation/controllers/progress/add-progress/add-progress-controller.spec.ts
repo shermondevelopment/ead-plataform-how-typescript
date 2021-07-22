@@ -20,6 +20,7 @@ const makeFakeRequest = () => ({
     body: {
         totalItems: 0,
         completedItems: 0,
+        disciplineId: 'any_id',
         moduleId: 'any_id'
     }
 })

@@ -2,6 +2,7 @@ export interface AddProgressModel {
     user_id: string
     totalItems: number
     completedItems: number
+    disciplineId: string
     moduleId: string
 }
 

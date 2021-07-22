@@ -20,11 +20,17 @@ export class AddProgressController implements Controller {
                 return badRequest(error)
             }
             const user_id = httpRequest.accountId
-            const { totalItems, completedItems, moduleId } = httpRequest.body
+            const {
+                totalItems,
+                completedItems,
+                disciplineId,
+                moduleId
+            } = httpRequest.body
             await this.addProgress.add({
                 user_id,
                 totalItems: parseInt(totalItems),
                 completedItems: parseInt(completedItems),
+                disciplineId,
                 moduleId
             })
             return ok(null)

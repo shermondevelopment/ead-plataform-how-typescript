@@ -5,8 +5,11 @@ import {
     AddModulesModelRepository
 } from '../../../../data/protocols/db/module/add-module-repository'
 import { LoadModuleRepository } from '../../../../data/protocols/db/module/load-module-repository'
+import { LoadProgressRepository } from '../../../../data/protocols/db/module/load-progress-module'
 import { UpdateModuleRepository } from '../../../../data/protocols/db/module/update-module-repository'
 import { ModulesModel } from '../../../../domain/models/module/add-module'
+import { LoadProgressResponse } from '../../../../domain/models/module/load-progress-module'
+import { LoadProgressRequest } from '../../../../domain/usecases/module/load-progress-module'
 import Module from '../entity/modules'
 import Progress from '../entity/progress'
 import { MysqlHelper } from '../helpers/mysql-helper'
@@ -16,7 +19,8 @@ export class ModuleMysqlRepository
         AddModuleRepository,
         LoadModuleRepository,
         UpdateModuleRepository,
-        DeleteRepository {
+        DeleteRepository,
+        LoadProgressRepository {
     private readonly moduleRepository: Repository<Module>
     private readonly progressRepository: Repository<Progress>
 
@@ -68,10 +72,12 @@ export class ModuleMysqlRepository
                                 ...item,
                                 progress: {
                                     ...progresso,
-                                    percentu: (
-                                        (progresso.completedItems * 100) /
-                                        progresso.totalItems
-                                    ).toFixed(0)
+                                    percentu: parseInt(
+                                        (
+                                            (progresso.completedItems * 100) /
+                                            progresso.totalItems
+                                        ).toFixed(0)
+                                    )
                                 }
                             }
                         }
@@ -99,5 +105,31 @@ export class ModuleMysqlRepository
     async delete(id: string): Promise<any> {
         const course = await this.moduleRepository.findOne({ id })
         await this.moduleRepository.remove(course)
+    }
+    async loadProgress(
+        loadParams: LoadProgressRequest
+    ): Promise<LoadProgressResponse> {
+        const qt_modules = await this.moduleRepository.count({
+            where: { disciplineId: loadParams.disciplineId }
+        })
+        const qt_concluded = await this.progressRepository.find({
+            where: {
+                user_id: loadParams.user_id,
+                disciplineId: loadParams.disciplineId
+            }
+        })
+
+        let x = 0
+        qt_concluded.forEach((item) => {
+            if (item.completedItems === item.totalItems) {
+                x += 1
+            }
+        })
+
+        return {
+            qt_modules,
+            qt_concluded: x,
+            percentu: (x * 100) / qt_modules
+        }
     }
 }
