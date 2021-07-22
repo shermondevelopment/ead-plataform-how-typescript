@@ -7,7 +7,6 @@ import {
     PrimaryGeneratedColumn
 } from 'typeorm'
 import Discipline from './disciplines'
-import Progress from './progress'
 
 @Entity('modules')
 export default class Module {
@@ -28,7 +27,4 @@ export default class Module {
         name: 'disciplineId'
     })
     disciplineId: string
-
-    // @OneToMany(() => Progress, (progress) => progress.moduleId)
-    // moduleId: Module[]
 }

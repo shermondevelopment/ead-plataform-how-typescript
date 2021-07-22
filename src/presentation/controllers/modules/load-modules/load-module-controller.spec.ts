@@ -12,6 +12,7 @@ interface SutTypes {
 }
 
 const makeFakeRequest = () => ({
+    accountId: 'any_id',
     query: {
         disciplineId: 'any_id'
     }
@@ -50,7 +51,7 @@ describe('LoadModule Controller', () => {
         const { sut, loadModuleStub } = makeSut()
         const spyLoadModule = jest.spyOn(loadModuleStub, 'load')
         await sut.handle(makeFakeRequest())
-        expect(spyLoadModule).toHaveBeenCalledWith('any_id')
+        expect(spyLoadModule).toHaveBeenCalledWith('any_id', 'any_id')
     })
     test('Should 500 if loadModule return throws', async () => {
         const { sut, loadModuleStub } = makeSut()

@@ -10,8 +10,10 @@ export class LoadModuleController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
+            const id = httpRequest.accountId
             const module = await this.loadModules.load(
-                httpRequest.query.disciplineId
+                httpRequest.query.disciplineId,
+                id
             )
             return ok(module)
         } catch (error) {

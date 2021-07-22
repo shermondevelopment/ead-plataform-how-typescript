@@ -1,5 +1,4 @@
-import { String } from 'aws-sdk/clients/cloudsearchdomain'
-import { createQueryBuilder, Repository } from 'typeorm'
+import { Repository } from 'typeorm'
 import { DeleteRepository } from '../../../../data/protocols/db/course/db-delete-course-repository'
 import {
     AddModuleRepository,
@@ -30,7 +29,7 @@ export class ModuleMysqlRepository
         const addModule = await this.moduleRepository.save(module)
         return addModule
     }
-    async load(disciplineId: string): Promise<any> {
+    async load(disciplineId: string, idUser: string): Promise<any> {
         const modules = async () => {
             const module = await this.moduleRepository.find({
                 where: { disciplineId }
@@ -39,7 +38,7 @@ export class ModuleMysqlRepository
         }
         const progresso = async () => {
             const progress = this.progressRepository.find({
-                where: { user_id: '3f3dcbed-a6c5-4b7f-a051-2e694bab2c64' }
+                where: { user_id: idUser }
             })
             return progress
         }
@@ -48,35 +47,33 @@ export class ModuleMysqlRepository
                 const arrayOfModules: any = []
                 const modulos = await modules()
                 const progress = await progresso()
-                if (modulos && progress) {
-                    modulos.forEach((item, index) => {
-                        progress.forEach((progresso, index2) => {
-                            if (item.id === progresso.moduleId) {
-                                console.log(index, index2)
-                                arrayOfModules.push({
-                                    ...item,
-                                    progresso: {
-                                        ...progresso,
-                                        percentu:
-                                            (progresso.completedItems * 100) /
-                                            progresso.totalItems
-                                    }
-                                })
-                            } else if (modules.length > index2) {
-                                console.log(modulos.length, index2)
-                                arrayOfModules.push({
-                                    ...item,
-                                    progresso: {
-                                        totalItems: 0,
-                                        completedItems: 0,
-                                        percentu: 0
-                                    }
-                                })
-                            }
-                        })
-                        console.log(arrayOfModules)
+                modulos.forEach((item, index) => {
+                    arrayOfModules.push({
+                        ...item,
+                        progress: {
+                            totalItems: 0,
+                            completedItems: 0,
+                            percentu: 0
+                        }
                     })
-                }
+                    progress.forEach((progresso) => {
+                        if (arrayOfModules[index].id === progresso.moduleId) {
+                            delete progresso.id
+                            delete progresso.moduleId
+                            arrayOfModules[index] = {
+                                ...item,
+                                progress: {
+                                    ...progresso,
+                                    percentu: (
+                                        (progresso.completedItems * 100) /
+                                        progresso.totalItems
+                                    ).toFixed(0)
+                                }
+                            }
+                        }
+                    })
+                })
+
                 return arrayOfModules
             } catch (error) {
                 return error

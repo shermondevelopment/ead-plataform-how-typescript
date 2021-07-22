@@ -1,18 +1,11 @@
-import {
-    Column,
-    Entity,
-    JoinColumn,
-    ManyToOne,
-    PrimaryGeneratedColumn
-} from 'typeorm'
-import Module from './modules'
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity('progress')
 export default class Progress {
     @PrimaryGeneratedColumn('uuid')
     id: string
 
-    @Column()
+    @Column({ select: false })
     user_id: string
 
     @Column()
@@ -21,10 +14,6 @@ export default class Progress {
     @Column()
     completedItems: number
 
-    // @ManyToOne(() => Module, (modules) => modules.moduleId)
-    // @JoinColumn({
-    //     name: 'moduleId'
-    // })
     @Column()
     moduleId: string
 }
