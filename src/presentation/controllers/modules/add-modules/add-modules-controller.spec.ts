@@ -28,7 +28,7 @@ const makeFakeRequest = () => ({
     body: {
         title: 'any_title',
         order: 'any_order',
-        qt_materials: 0,
+        qtmaterials: 0,
         disciplineId: 'any_discipline'
     }
 })

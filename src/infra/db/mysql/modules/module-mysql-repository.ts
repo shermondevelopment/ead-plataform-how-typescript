@@ -26,7 +26,11 @@ export class ModuleMysqlRepository
     }
 
     async add(module: AddModulesModelRepository): Promise<ModulesModel> {
-        const addModule = await this.moduleRepository.save(module)
+        console.log(module)
+        const addModule = this.moduleRepository.create({
+            ...module
+        })
+        await this.moduleRepository.save(addModule)
         return addModule
     }
     async load(disciplineId: string, idUser: string): Promise<any> {

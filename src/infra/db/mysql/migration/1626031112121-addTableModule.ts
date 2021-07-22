@@ -35,8 +35,9 @@ export class addTableModule1626031112121 implements MigrationInterface {
                         isNullable: false
                     },
                     {
-                        name: 'qt_materials',
+                        name: 'qtmaterials',
                         type: 'integer',
+                        default: '0',
                         isNullable: false
                     },
                     {

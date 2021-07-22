@@ -22,6 +22,9 @@ export default class Module {
     @Column()
     order: number
 
+    @Column()
+    qtmaterials: number
+
     @ManyToOne(() => Discipline, (discipline) => discipline.moduleId)
     @JoinColumn({
         name: 'disciplineId'

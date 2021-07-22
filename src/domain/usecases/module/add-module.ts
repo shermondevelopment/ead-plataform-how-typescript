@@ -3,7 +3,7 @@ import { ModulesModel } from '../../models/module/add-module'
 export interface AddModulesModel {
     title: string
     order: number
-    qt_materials: number
+    qtmaterials: number
     disciplineId: string
 }
 
