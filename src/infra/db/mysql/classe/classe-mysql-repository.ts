@@ -1,5 +1,6 @@
 import { Repository } from 'typeorm'
 import { UpdateClasseRepository } from '../../../../data/protocols/db/classe/update-classe'
+import { DeleteRepository } from '../../../../data/protocols/db/course/db-delete-course-repository'
 import {
     AddClasseModelRepository,
     AddClasseRepository,
@@ -9,7 +10,7 @@ import Classes from '../entity/classe'
 import { MysqlHelper } from '../helpers/mysql-helper'
 
 export class ClasseMysqlRepository
-    implements AddClasseRepository, UpdateClasseRepository {
+    implements AddClasseRepository, UpdateClasseRepository, DeleteRepository {
     private readonly classeRepository: Repository<Classes>
 
     constructor() {
@@ -26,5 +27,9 @@ export class ClasseMysqlRepository
     ): Promise<any> {
         await this.classeRepository.update(idClass, params)
         return null
+    }
+    async delete(id: string): Promise<any> {
+        const deleted = this.classeRepository.delete(id)
+        return deleted
     }
 }
