@@ -12,6 +12,9 @@ interface SutTypes {
 }
 
 const makeFakeRequest = () => ({
+    params: {
+        classId: 'any_id'
+    },
     body: {
         title: 'new title',
         url: 'new video',

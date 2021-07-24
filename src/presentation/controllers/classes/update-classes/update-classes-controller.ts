@@ -11,10 +11,8 @@ export class UpdateClasseController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            await this.updateClasse.update(
-                httpRequest.body.classeId,
-                httpRequest.body
-            )
+            const classId = httpRequest.params.classId
+            await this.updateClasse.update(classId, httpRequest.body)
             return ok(null)
         } catch (error) {
             return serverError(error)
