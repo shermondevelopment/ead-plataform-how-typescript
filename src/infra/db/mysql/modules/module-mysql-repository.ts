@@ -55,6 +55,7 @@ export class ModuleMysqlRepository
                 const arrayOfModules: any = []
                 const modulos = await modules()
                 const progress = await progresso()
+                console.log(progress)
                 modulos.forEach((item, index) => {
                     arrayOfModules.push({
                         ...item,
