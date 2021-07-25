@@ -4,12 +4,16 @@ import {
     AddModuleRepository,
     AddModulesModelRepository
 } from '../../../../data/protocols/db/module/add-module-repository'
+import { LoadClassRepository } from '../../../../data/protocols/db/module/load-class-from-module'
 import { LoadModuleRepository } from '../../../../data/protocols/db/module/load-module-repository'
 import { LoadProgressRepository } from '../../../../data/protocols/db/module/load-progress-module'
 import { UpdateModuleRepository } from '../../../../data/protocols/db/module/update-module-repository'
 import { ModulesModel } from '../../../../domain/models/module/add-module'
 import { LoadProgressResponse } from '../../../../domain/models/module/load-progress-module'
 import { LoadProgressRequest } from '../../../../domain/usecases/module/load-progress-module'
+import Classes from '../entity/classe'
+import HistoricClass from '../entity/historicClass'
+import Materials from '../entity/materials'
 import Module from '../entity/modules'
 import Progress from '../entity/progress'
 import { MysqlHelper } from '../helpers/mysql-helper'
@@ -20,17 +24,23 @@ export class ModuleMysqlRepository
         LoadModuleRepository,
         UpdateModuleRepository,
         DeleteRepository,
-        LoadProgressRepository {
+        LoadProgressRepository,
+        LoadClassRepository {
     private readonly moduleRepository: Repository<Module>
     private readonly progressRepository: Repository<Progress>
+    private readonly classRepository: Repository<Classes>
+    private readonly historicClass: Repository<HistoricClass>
+    private readonly materialsRepository: Repository<Materials>
 
     constructor() {
         this.moduleRepository = MysqlHelper.getRepository(Module)
         this.progressRepository = MysqlHelper.getRepository(Progress)
+        this.classRepository = MysqlHelper.getRepository(Classes)
+        this.historicClass = MysqlHelper.getRepository(HistoricClass)
+        this.materialsRepository = MysqlHelper.getRepository(Materials)
     }
 
     async add(module: AddModulesModelRepository): Promise<ModulesModel> {
-        console.log(module)
         const addModule = this.moduleRepository.create({
             ...module
         })
@@ -55,7 +65,6 @@ export class ModuleMysqlRepository
                 const arrayOfModules: any = []
                 const modulos = await modules()
                 const progress = await progresso()
-                console.log(progress)
                 modulos.forEach((item, index) => {
                     arrayOfModules.push({
                         ...item,
@@ -132,5 +141,58 @@ export class ModuleMysqlRepository
             qt_concluded: x,
             percentu: (x * 100) / qt_modules
         }
+    }
+    async loadClass(userId: string, moduleId: string): Promise<any> {
+        const modules = async () => {
+            const module = await this.moduleRepository.findOne({
+                where: { id: moduleId }
+            })
+            return module
+        }
+
+        const montarArray = async () => {
+            try {
+                const module = await modules()
+                const arrayModule: any = []
+                arrayModule.push(module)
+
+                const materials = await this.materialsRepository.find({
+                    where: { moduleId: module.id }
+                })
+
+                const classes = await this.classRepository.find({
+                    where: { moduleId: module.id },
+                    order: { order: 'ASC' }
+                })
+
+                const historic = await this.historicClass.find({
+                    where: { user_id: userId, moduleId: module.id }
+                })
+
+                classes.forEach((item, index, objeto) => {
+                    arrayModule[0].classes = objeto
+                    arrayModule[0].classes[index].viewed = false
+                    historic.forEach((historic) => {
+                        if (item.id === historic.id_class) {
+                            arrayModule[0].classes[index].viewed = true
+                        }
+                    })
+                })
+                materials.forEach((item, index, objeto) => {
+                    arrayModule[0].materials = objeto
+                    arrayModule[0].materials[index].viewed = false
+                    historic.forEach((historic) => {
+                        if (item.id === historic.id_class) {
+                            arrayModule[0].materials[index].viewed = true
+                        }
+                    })
+                })
+                return arrayModule
+            } catch (error) {
+                return error
+            }
+        }
+        const result = await montarArray()
+        return result
     }
 }

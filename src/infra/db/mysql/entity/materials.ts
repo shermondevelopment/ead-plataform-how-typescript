@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
-@Entity('classes')
-export default class Classes {
+@Entity('materials')
+export default class Materials {
     @PrimaryGeneratedColumn('uuid')
     id: string
 
@@ -9,13 +9,10 @@ export default class Classes {
     title: string
 
     @Column()
-    slug: string
+    url: string
 
     @Column({ select: false })
     order: number
-
-    @Column()
-    url: string
 
     @Column({ select: false })
     moduleId: string

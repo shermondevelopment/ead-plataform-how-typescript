@@ -7,6 +7,7 @@ import {
     PrimaryGeneratedColumn
 } from 'typeorm'
 import Discipline from './disciplines'
+import HistoricClass from './historicClass'
 import Progress from './progress'
 
 @Entity('modules')
@@ -37,4 +38,10 @@ export default class Module {
         name: 'moduleId'
     })
     progress: Progress[]
+
+    @OneToMany(() => HistoricClass, (historic) => historic.moduleId)
+    @JoinColumn({
+        name: 'moduleId'
+    })
+    historicClass: HistoricClass[]
 }
