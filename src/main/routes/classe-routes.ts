@@ -9,7 +9,7 @@ import { makeAuthMiddleware } from '../factories/middlewares/auth-middleware-fac
 
 export default (router: Router): void => {
     const adminAuth = adaptMiddleware(makeAuthMiddleware('admin'))
-    const userAuth = adaptMiddleware(makeAuthMiddleware('admin'))
+    const userAuth = adaptMiddleware(makeAuthMiddleware('user'))
 
     router.get('/classe/:id', userAuth, adaptRoute(makeLoadClassesController()))
     router.post('/classe', adminAuth, adaptRoute(makeAddClasseController()))

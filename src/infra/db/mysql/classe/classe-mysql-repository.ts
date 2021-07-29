@@ -56,7 +56,7 @@ export class ClasseMysqlRepository
                 where: { moduleId, user_id: userId }
             })
 
-            classe.forEach((item, index, objeto) => {
+            classe.forEach((item, index) => {
                 arrayOfClass.push(item)
                 arrayOfClass[index].viewed = false
                 historic.forEach((historic) => {

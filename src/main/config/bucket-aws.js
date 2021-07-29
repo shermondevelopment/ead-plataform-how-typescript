@@ -43,7 +43,8 @@ export default {
             'image/jpeg',
             'image/pjpeg',
             'image/png',
-            'image/gig'
+            'image/gig',
+            'application/pdf'
         ]
         if (allowedMimes.includes(file.mimetype)) {
             cb(null, true)

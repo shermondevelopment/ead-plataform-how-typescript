@@ -8,7 +8,7 @@ interface MulterRequest extends Request {
 export const adaptRouteMulter = (controller: Controller) => {
     return async (req: MulterRequest, res: Response) => {
         const httpRequest: HttpRequest = {
-            body: { ...req.body, figure: req.file.key },
+            body: { ...req.body, figure: req.file.location },
             accountId: req.accountId
         }
         const httpResponse = await controller.handle(httpRequest)
