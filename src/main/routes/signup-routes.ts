@@ -21,6 +21,8 @@ import { makeAddDisciplineController } from '../factories/controllers/discipline
 import { makeLoadDisciplineController } from '../factories/controllers/discipline/load/discipline-controller-factory'
 import { makeDeleteDisciplineController } from '../factories/controllers/discipline/delete/discipline-controller-factory'
 import { makeUpdateDisciplineController } from '../factories/controllers/discipline/update/update-controller-factory'
+import { makeUnlockedUserController } from '../factories/controllers/unlocked-user/unlocked-user-factory'
+import { makeLockedUserController } from '../factories/controllers/locked-user/locked-user-factory'
 
 export default (router: Router): void => {
     const adminAuth = adaptMiddleware(makeAuthMiddleware('admin'))
@@ -79,4 +81,10 @@ export default (router: Router): void => {
         adminAuth,
         adaptRoute(makeUpdateDisciplineController())
     )
+    router.patch(
+        '/unlocked',
+        adminAuth,
+        adaptRoute(makeUnlockedUserController())
+    )
+    router.get('/locked', userAuth, adaptRoute(makeLockedUserController()))
 }

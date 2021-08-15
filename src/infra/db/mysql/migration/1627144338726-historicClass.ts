@@ -34,6 +34,12 @@ export class historicClass1627144338726 implements MigrationInterface {
                         isNullable: false
                     },
                     {
+                        name: 'data',
+                        type: 'datetime',
+                        default: 'NOW()',
+                        isNullable: false
+                    },
+                    {
                         name: 'moduleId',
                         type: 'varchar',
                         isNullable: false

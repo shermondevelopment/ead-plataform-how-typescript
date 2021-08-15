@@ -44,7 +44,10 @@ export class ClasseMysqlRepository
     async loadClass(userId: string, moduleId: string): Promise<any> {
         const classes = async () => {
             const classes = await this.classeRepository.find({
-                where: { moduleId }
+                where: { moduleId },
+                order: {
+                    order: 'ASC'
+                }
             })
             return classes
         }

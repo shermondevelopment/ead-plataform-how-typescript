@@ -30,6 +30,8 @@ import { UpdateAccountModel } from '../../../../domain/models/account/update-acc
 import { LoadAccountByIdRepository } from '../../../../data/protocols/db/account/load-account-by-id-repository'
 import { UpdatePasswordRepository } from '../../../../data/protocols/db/account/update-password-repository'
 import { UpdatePasswordParams } from '../../../../domain/usecases/account/update-password/update-password'
+import { UnlockedUserRepository } from '../../../../data/protocols/db/account/unlocked-user'
+import { LockedUserRepository } from '../../../../data/protocols/db/account/locked-user'
 
 export class AccountMongoRepository
     implements
@@ -43,7 +45,9 @@ export class AccountMongoRepository
         UpdateProfileRepository,
         UpdateAccountRepository,
         LoadAccountByIdRepository,
-        UpdatePasswordRepository {
+        UpdatePasswordRepository,
+        UnlockedUserRepository,
+        LockedUserRepository {
     private accountRepository: Repository<Accounts>
 
     constructor() {
@@ -150,5 +154,20 @@ export class AccountMongoRepository
         account.password = params.password
         await this.accountRepository.save(account)
         return true
+    }
+    async unlocked(email: string): Promise<boolean> {
+        const user = await this.accountRepository.findOne({ email })
+        if (!user) {
+            return false
+        }
+        user.payment = !user.payment
+        await this.accountRepository.save(user)
+        return true
+    }
+
+    async locked(id: string): Promise<string> {
+        const user = await this.accountRepository.findOne({ id })
+
+        return user.token
     }
 }

@@ -31,7 +31,7 @@ export class CourseMysqlRepository
         return myCourse
     }
 
-    async load(param: ParamCourses): Promise<CourseArray> {
+    async load(param: ParamCourses): Promise<any> {
         const { search, page } = param
 
         const courses = await this.courseRepository.findAndCount({
@@ -49,7 +49,8 @@ export class CourseMysqlRepository
         }
         return {
             courseArray: courses[0],
-            next
+            next,
+            pages: Math.ceil(courses[1] / 8)
         }
     }
 

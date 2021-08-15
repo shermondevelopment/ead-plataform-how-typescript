@@ -28,8 +28,22 @@ export class DbAuthentication implements Authentication {
                 const accessToken = await this.tokenGenerator.encrypt({
                     id: account.id,
                     name: account.name,
-                    profile: account.profile
+                    email: account.email,
+                    profile: account.profile,
+                    status: account.status,
+                    admin: account.role === 'admin' ? true : false,
+                    payment: account.payment,
+                    sexo: account.sexo,
+                    zipcode: account.zipcode,
+                    state: account.state,
+                    city: account.city,
+                    district: account.district,
+                    address: account.address,
+                    number: account.number,
+                    phone: account.phone,
+                    view_free_time: account.view_free_time
                 })
+
                 await this.updateAccessTokenRepository.update(
                     account.id,
                     accessToken

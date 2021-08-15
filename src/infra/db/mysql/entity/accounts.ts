@@ -43,7 +43,7 @@ export default class Accounts {
     @Column()
     token: string
 
-    @Column({ select: false })
+    @Column()
     role?: string
 
     @Column()
@@ -51,6 +51,9 @@ export default class Accounts {
 
     @Column()
     status?: boolean
+
+    @Column()
+    payment?: boolean
 
     @Column({ select: false })
     token_account: string
@@ -64,7 +67,7 @@ export default class Accounts {
     @BeforeInsert()
     addDate(): void {
         const date = new Date()
-        date.setDate(date.getHours() + 48)
+        date.setDate(date.getDate() + 1)
         this.view_free_time = date
     }
 }

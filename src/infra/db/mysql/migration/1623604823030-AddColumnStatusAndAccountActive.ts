@@ -21,6 +21,15 @@ export class AddColumnStatusAndAccountActive1623604823030
                 isNullable: true
             })
         )
+        await queryRunner.addColumn(
+            'accounts',
+            new TableColumn({
+                name: 'payment',
+                type: 'boolean',
+                default: false,
+                isNullable: true
+            })
+        )
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
