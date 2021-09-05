@@ -31,11 +31,12 @@ const accountFakeData = (): AddAccountModel => ({
     password: 'valid_password'
 })
 
-const accountData = (): AccountModel => ({
+const accountData = () => ({
     id: 'valid_id',
     name: 'valid_name',
     email: 'valid_email',
-    password: 'hashed_password'
+    password: 'hashed_password',
+    view_free_time: new Date()
 })
 
 const AddAccountRepository = (): AddAccountRepository => {

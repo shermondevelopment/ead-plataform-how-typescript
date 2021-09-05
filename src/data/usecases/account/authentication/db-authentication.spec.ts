@@ -14,7 +14,8 @@ const makeFakeAccount = (): AccountModel => ({
     name: 'any_name',
     email: 'any_email@mail.com',
     password: 'hashed_password',
-    profile: 'any_profile'
+    profile: 'any_profile',
+    view_free_time: new Date()
 })
 
 const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {

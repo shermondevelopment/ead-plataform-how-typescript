@@ -17,7 +17,11 @@ const makeSut = (): JwtAdapter => {
 const makeFakeData = () => ({
     id: 'any_id',
     name: 'any_name',
-    profile: 'any_profile'
+    email: 'any_email@mail.com',
+    status: false,
+    admin: false,
+    profile: 'any_profile',
+    view_free_time: new Date()
 })
 
 describe('Jwt Adapter', () => {

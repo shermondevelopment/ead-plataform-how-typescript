@@ -53,7 +53,8 @@ const makeFakeAccount = (): AccountModel => ({
     id: 'any_id',
     name: 'valid_name',
     email: 'valid_email@mail.com',
-    password: 'valid_password'
+    password: 'valid_password',
+    view_free_time: new Date()
 })
 
 const makeAddAccountStub = (): AddAccount => {
