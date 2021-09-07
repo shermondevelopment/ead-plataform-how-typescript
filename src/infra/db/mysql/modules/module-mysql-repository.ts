@@ -50,13 +50,14 @@ export class ModuleMysqlRepository
     async load(disciplineId: string, idUser: string): Promise<any> {
         const modules = async () => {
             const module = await this.moduleRepository.find({
-                where: { disciplineId }
+                where: { disciplineId },
+                order: { order: 'ASC' }
             })
             return module
         }
         const progresso = async () => {
             const progress = this.progressRepository.find({
-                where: { user_id: idUser }
+                where: { user_id: idUser },
             })
             return progress
         }
