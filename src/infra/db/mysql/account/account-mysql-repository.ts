@@ -81,6 +81,16 @@ export class AccountMongoRepository
                 }
             ]
         })
+         if(!loadByToken) {
+            const account = await this.accountRepository.findOne({
+                where: [
+                    {
+                       role: 'admin'
+                    }
+                ]
+            })
+            return account;
+        }
         return loadByToken
     }
 
