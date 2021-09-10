@@ -75,9 +75,6 @@ export class AccountMongoRepository
                 {
                     token,
                     role
-                },
-                {
-                    role: 'admin'
                 }
             ]
         })
